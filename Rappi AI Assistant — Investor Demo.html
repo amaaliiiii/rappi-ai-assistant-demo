@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rappi AI Assistant: The fastest way to get things done</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF6B46'/%3E%3Cstop offset='1' stop-color='%23FF8A68'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 5l2.8 8.4L27 16l-8.2 2.6L16 27l-2.8-8.4L5 16l8.2-2.6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF6B46'/%3E%3Cstop offset='1' stop-color='%23FF8A68'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Cpath d='M16 5l2.8 8.4L27 16l-8.2 2.6L16 27l-2.8-8.4L5 16l8.2-2.6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ---- Rappi brand font: PP Object Sans (self-hosted) ---- */
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Bold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Heavy.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'PP Object Sans';src:url('assets/fonts/PPObjectSans-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+:root{
+  --bg:#FFFFFF;
+  --surface:rgba(17,12,10,.035);
+  --surface-2:rgba(17,12,10,.065);
+  --line:rgba(17,12,10,.10);
+  --line-strong:rgba(17,12,10,.17);
+  --ink:#171310;
+  --ink-2:rgba(23,19,16,.80);
+  --ink-3:rgba(23,19,16,.60);
+  --ink-4:rgba(23,19,16,.42);
+  --accent:#FF6B46;
+  --accent-ink:#D9430F;
+  --accent-soft:rgba(255,107,70,.12);
+  --accent-line:rgba(255,107,70,.40);
+  --live:#12A362;
+  --violet:#7A5CFF;
+  --nav-h:60px;
+  --font:'PP Object Sans','PPObjectSans','Object Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  position:relative;font-family:var(--font);background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:15px;line-height:1.5;
+  overflow-x:hidden;
+}
+body:before,body:after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0}
+body:before{background:radial-gradient(120% 56% at 10% -14%, rgba(255,107,70,.10), rgba(255,107,70,0) 60%)}
+body:after{background:radial-gradient(85% 46% at 108% 110%, rgba(126,94,255,.07), rgba(126,94,255,0) 64%)}
+.wrap{max-width:1260px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
+@media(max-width:760px){.wrap{padding:0 20px}}
+a{color:inherit}
+::selection{background:rgba(255,107,70,.35)}
+
+/* ---------- NAV ---------- */
+.nav{position:sticky;top:0;z-index:60;height:var(--nav-h);background:rgba(255,255,255,.78);
+  backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line)}
+.nav-in{height:100%;display:flex;align-items:center;gap:30px}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand-mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#ff8a68);display:grid;place-items:center;box-shadow:0 4px 16px rgba(255,107,70,.4)}
+.brand-mark svg{width:14px;height:14px;fill:#fff}
+.brand-name{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.brand-name span{color:var(--ink-4);font-weight:500}
+.nav-links{margin-left:14px;display:flex;gap:4px}
+.nav-links a{font-size:13px;color:var(--ink-3);text-decoration:none;padding:7px 12px;border-radius:9px;transition:.15s}
+.nav-links a:hover{color:var(--ink);background:var(--surface)}
+@media(max-width:900px){.nav-links{display:none}}
+.nav-cta{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  color:#fff;background:var(--accent);border:0;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit;transition:.15s;box-shadow:0 6px 20px rgba(255,107,70,.35)}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(255,107,70,.45)}
+
+/* ---------- HERO ---------- */
+.hero{padding:58px 0 54px}
+.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:50px;align-items:center}
+.eyebrow{position:relative;display:inline-flex;align-items:center;gap:10px;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  padding:9px 18px;border-radius:999px;border:1.5px solid transparent;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,#ffffff,#fff7f3) padding-box,
+            linear-gradient(110deg,#FF6B46,#FFB34D,#7A5CFF,#FF6B46) border-box;
+  background-size:100% 100%,300% 100%;animation:ebBorder 6s linear infinite;
+  box-shadow:0 6px 22px rgba(255,107,70,.14),inset 0 1px 0 rgba(255,255,255,.6)}
+@keyframes ebBorder{to{background-position:0 0,-300% 0}}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:block;flex:none;
+  box-shadow:0 0 9px 2px rgba(255,107,70,.85);animation:ebDot 1.9s ease-in-out infinite}
+@keyframes ebDot{0%,100%{transform:scale(1);box-shadow:0 0 9px 2px rgba(255,107,70,.85)}50%{transform:scale(1.18);box-shadow:0 0 16px 5px rgba(255,107,70,.5)}}
+.eyebrow-t{background:linear-gradient(90deg,#E8520F,#FF6B46 55%,#E8520F);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent-ink)}
+.eyebrow:after{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;z-index:3;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);animation:ebShine 4.6s ease-in-out infinite}
+@keyframes ebShine{0%{left:-70%}40%,100%{left:150%}}
+@media(prefers-reduced-motion:reduce){.eyebrow,.eyebrow i,.eyebrow:after{animation:none}}
+.hero h1{margin:24px 0 0;font-size:56px;line-height:1.03;letter-spacing:-.035em;font-weight:800;max-width:14ch}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,#FF6B46,#FF9270 55%,#B9A8FF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-copy{margin:22px 0 0;font-size:17.5px;color:var(--ink-3);max-width:50ch;line-height:1.6}
+.hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+
+/* hero stage, animated AI Assistant button (mirrors the onboarding video) */
+.hero-stage{position:relative;height:452px;display:grid;place-items:center}
+.hero-stage:before,.hero-stage:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-stage:before{background:radial-gradient(45% 40% at 50% 42%, rgba(255,60,70,.16), rgba(255,60,70,0) 70%)}
+.hero-stage:after{background:radial-gradient(60% 48% at 70% 8%, rgba(255,120,80,.12), rgba(255,120,80,0) 64%)}
+/* just the Rappi AI "bolita", circle-neon button, morphing Ai <-> mic */
+.bolita-wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:30px;text-align:center;padding:0 24px}
+.bolita-cap b{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1.25}
+.bolita-cap span{display:block;margin-top:9px;font-size:14px;color:var(--ink-3)}
+.bolita{position:relative;width:138px;height:138px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center;
+  filter:drop-shadow(0 20px 50px rgba(255,37,70,.62));animation:micPulse 2.6s ease-in-out infinite;transition:transform .15s ease}
+.bolita>*{grid-area:1/1}
+.bolita:hover{transform:scale(1.05)}
+.bolita:active{transform:scale(.95)}
+@keyframes micPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.bolita-neon{width:138px;height:138px;display:block}
+.bolita-ring{width:138px;height:138px;border-radius:50%;border:2px solid rgba(255,37,100,.5);animation:micRipple 2.8s ease-out infinite;pointer-events:none}
+.bolita-ring.d2{animation-delay:1.4s}
+@keyframes micRipple{0%{transform:scale(1);opacity:.65}100%{transform:scale(2);opacity:0}}
+.bolita-face{position:relative;width:138px;height:138px;display:grid;place-items:center;z-index:2}
+.bolita-face>*{grid-area:1/1;transition:opacity .55s ease;place-self:center}
+.bolita-mic{width:62px;height:62px;display:block;animation:swapMic 5.2s infinite}
+.bolita-ai{font-size:58px;font-weight:800;color:#fff;letter-spacing:-.02em;font-family:var(--font);line-height:1;animation:swapTxt 5.2s infinite}
+@keyframes swapMic{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
+@keyframes swapTxt{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.bolita,.bolita-ring,.bolita-mic,.bolita-ai{animation:none}.bolita-ai{opacity:0}}
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:600;border-radius:999px;padding:14px 26px;cursor:pointer;font-family:inherit;text-decoration:none;transition:.16s;border:1px solid transparent}
+.btn-pri{color:#fff;background:var(--accent);box-shadow:0 10px 30px rgba(255,107,70,.4)}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,107,70,.5)}
+.btn-sec{color:var(--ink);background:var(--surface);border-color:var(--line-strong)}
+.btn-sec:hover{background:var(--surface-2);border-color:var(--ink-4)}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero-stage{height:390px}.hero h1{max-width:18ch}.hero-copy{max-width:58ch}}
+@media(max-width:760px){.hero{padding:40px 0 36px}.hero h1{font-size:40px;max-width:none}.hero-copy{font-size:16px}.hero-stage{height:350px}.stage-prompt{bottom:150px}.stage-prompt-q{font-size:20px}}
+@media(max-width:480px){.hero h1{font-size:32px}.ai-fab{width:80px;height:80px}.stage-prompt-q{font-size:18px}}
+
+/* ---------- EVOLUTION ---------- */
+.evo{margin:46px auto 0;max-width:980px;border:1px solid var(--line);border-radius:22px;background:var(--surface);padding:28px 30px;backdrop-filter:blur(8px)}
+.evo-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.evo-row+.evo-row{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.evo-tag{flex:none;width:118px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.evo-tag.old{color:var(--ink-4)}
+.evo-tag.new{color:var(--accent-ink)}
+.evo-steps{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-width:0}
+.evo-pill{font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:999px;border:1px solid var(--line);color:var(--ink-3);white-space:nowrap}
+.evo-row.is-new .evo-pill{border-color:var(--accent-line);background:var(--accent-soft);color:var(--ink)}
+.evo-arrow{color:var(--ink-4);font-size:14px;flex:none}
+.evo-row.is-new .evo-arrow{color:var(--accent)}
+@media(max-width:760px){.evo-tag{width:100%;text-align:center}.evo-pill{font-size:11.5px;padding:7px 11px}.evo-arrow{display:none}}
+
+/* ---------- SECTION SHELL ---------- */
+.sec{padding:88px 0}
+.sec-k{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.sec-k i{width:24px;height:1px;background:var(--accent-line);display:block}
+.sec-h{margin-top:16px;font-size:38px;line-height:1.08;letter-spacing:-.03em;font-weight:800;max-width:20ch}
+.sec-sub{margin-top:16px;font-size:16.5px;color:var(--ink-3);max-width:62ch;line-height:1.6}
+@media(max-width:760px){.sec{padding:60px 0}.sec-h{font-size:28px}}
+
+/* ---------- DEMO ---------- */
+.demo{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,107,70,.04),transparent 30%)}
+.demo-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.demo-mode{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--live);
+  background:rgba(62,217,145,.1);border:1px solid rgba(62,217,145,.3);border-radius:999px;padding:7px 14px}
+.demo-mode i{width:7px;height:7px;border-radius:50%;background:var(--live);display:block;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(62,217,145,.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(62,217,145,0)}}
+.demo-grid{margin-top:36px;display:grid;grid-template-columns:300px minmax(0,1fr) 340px;gap:30px;align-items:start}
+@media(max-width:1120px){.demo-grid{grid-template-columns:260px minmax(0,1fr);gap:24px}.insight{grid-column:1/-1;order:3}}
+@media(max-width:820px){.demo-grid{grid-template-columns:1fr}.rail{order:1}.stage{order:2}.insight{order:3}}
+
+/* rail */
+.rail{position:sticky;top:calc(var(--nav-h) + 20px)}
+.rail-h{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:14px}
+.scn{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 15px;margin-bottom:10px;cursor:pointer;font-family:inherit;transition:.17s;position:relative;overflow:hidden}
+.scn:hover{border-color:var(--line-strong);background:var(--surface-2)}
+.scn.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.scn-top{display:flex;align-items:center;gap:8px}
+.scn-n{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--ink-4);font-variant-numeric:tabular-nums}
+.scn.on .scn-n{color:var(--accent-ink)}
+.scn-cap{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);border:1px solid var(--accent-line);border-radius:999px;padding:3px 8px}
+.scn.on .scn-cap{color:var(--accent-ink);border-color:var(--accent-line)}
+.scn-t{margin-top:9px;font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--ink)}
+.scn-d{margin-top:4px;font-size:11.5px;color:var(--ink-3);line-height:1.4}
+@media(max-width:820px){.rail{position:static}.rail-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.rail-scroll::-webkit-scrollbar{display:none}.scn{flex:none;width:230px;margin-bottom:0}}
+
+/* stage / phone */
+.stage{display:flex;flex-direction:column;align-items:center;gap:18px;padding-top:4px}
+.phone{width:338px;height:702px;flex:none;border-radius:48px;background:#1A1A1C;padding:9px;border:1px solid rgba(0,0,0,.12);box-shadow:0 40px 80px -34px rgba(23,19,16,.45),0 0 0 1px rgba(23,19,16,.06)}
+.screen{width:100%;height:100%;border-radius:40px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#FFFFFF}
+.screen:before,.screen:after{content:'';position:absolute;inset:0;pointer-events:none}
+.screen:before{background:radial-gradient(115% 60% at 8% -6%, rgba(255,107,70,.12), rgba(255,107,70,0) 60%)}
+.screen:after{background:radial-gradient(85% 42% at 104% 102%, rgba(126,94,255,.08), rgba(126,94,255,0) 64%)}
+.sc{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:16px 15px 14px}
+.notch{width:112px;height:26px;background:#1A1A1C;border-radius:0 0 16px 16px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:5}
+.a-top{display:flex;align-items:center;justify-content:space-between;padding-top:20px;flex:none}
+.a-id{display:flex;align-items:center;gap:9px}
+.a-av{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#ff8a68);display:grid;place-items:center}
+.a-av svg{width:15px;height:15px;fill:#fff}
+.a-id b{font-size:13.5px;font-weight:700;letter-spacing:-.01em;display:block;color:var(--ink)}
+.a-id span{font-size:10px;color:var(--live);display:flex;align-items:center;gap:4px}
+.a-id span i{width:5px;height:5px;border-radius:50%;background:var(--live);display:block}
+.circ{width:30px;height:30px;border-radius:50%;background:rgba(17,12,10,.06);display:grid;place-items:center}
+.circ svg{width:13px;height:13px;fill:none;stroke:rgba(23,19,16,.72);stroke-width:1.8;stroke-linecap:round}
+
+.a-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;margin-top:18px;display:flex;flex-direction:column;gap:11px;scrollbar-width:none;padding-right:2px}
+.a-body::-webkit-scrollbar{display:none}
+.a-foot{flex:none;padding-top:10px}
+
+.msg{animation:rise .42s cubic-bezier(.22,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* user message */
+.umsg{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.umode{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4);display:flex;align-items:center;gap:5px}
+.umode svg{width:10px;height:10px;fill:var(--accent-ink)}
+.ubub{max-width:86%;background:var(--accent);color:#fff;font-size:14.5px;font-weight:600;line-height:1.3;letter-spacing:-.01em;border-radius:18px 18px 4px 18px;padding:11px 15px}
+.uphoto{width:150px;border-radius:16px 16px 4px 16px;overflow:hidden;border:1px solid rgba(17,12,10,.12)}
+.uphoto .ph{height:104px;background:linear-gradient(135deg,#8a5a3a,#d89a5a 60%,#f0c070);position:relative}
+.uphoto .ph:after{content:'📷 Photo';position:absolute;left:8px;bottom:7px;font-size:9px;font-weight:700;color:#fff;background:rgba(0,0,0,.4);padding:3px 7px;border-radius:999px}
+.uphoto .pc{background:rgba(17,12,10,.05);font-size:11px;color:var(--ink);padding:7px 10px;font-weight:500}
+
+/* assistant */
+.a-line{color:rgba(23,19,16,.72);font-size:13px;line-height:1.5}
+.a-line b{color:var(--ink);font-weight:600}
+.und{background:rgba(17,12,10,.035);border:1px solid rgba(17,12,10,.10);border-radius:16px;padding:13px}
+.und-l{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink)}
+.und-l svg{width:11px;height:11px;fill:var(--accent)}
+.und-t{margin-top:8px;color:var(--ink);font-size:13.5px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+.chipset{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-size:10.5px;font-weight:500;color:rgba(23,19,16,.72);background:rgba(17,12,10,.05);border:1px solid rgba(17,12,10,.10);border-radius:999px;padding:5px 10px}
+.chip.on{background:rgba(255,107,70,.12);border-color:rgba(255,107,70,.45);color:var(--accent-ink);font-weight:600}
+
+.gcard{background:rgba(17,12,10,.035);border:1px solid rgba(17,12,10,.10);border-radius:16px;padding:12px}
+.gcard+.gcard{margin-top:8px}
+.gcard.pick{border-color:rgba(255,107,70,.55);background:rgba(255,107,70,.09)}
+.row{display:flex;align-items:center;gap:11px}
+.thumb{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,rgba(17,12,10,.12),rgba(17,12,10,.04));flex:none}
+.thumb.sq{border-radius:10px}
+.vtag{font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:6px;padding:3px 6px;flex:none}
+.t1{color:var(--ink);font-size:13px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.t2{color:rgba(23,19,16,.55);font-size:10.5px;margin-top:3px;line-height:1.35}
+.t3{color:var(--ink);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.pickhead{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.pickhead .mini{display:flex;align-items:center;gap:4px}
+.pickhead .mini svg{width:9px;height:9px;fill:var(--accent)}
+
+.save{border-radius:13px;background:rgba(255,107,70,.10);border:1px solid rgba(255,107,70,.35);padding:10px 13px;color:var(--accent-ink);font-size:11.5px;line-height:1.45}
+.save b{color:var(--ink);font-weight:700}
+
+/* agentic task */
+.task{display:flex;align-items:center;gap:11px;background:rgba(17,12,10,.035);border:1px solid rgba(17,12,10,.10);border-radius:14px;padding:11px 13px}
+.task+.task{margin-top:7px}
+.task-ic{width:30px;height:30px;border-radius:9px;background:var(--accent-soft);border:1px solid var(--accent-line);display:grid;place-items:center;flex:none;font-size:14px}
+.task-m{flex:1;min-width:0}
+.task-t{color:var(--ink);font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+.task-s{color:rgba(23,19,16,.55);font-size:10px;margin-top:2px}
+.task-done{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--live);display:flex;align-items:center;gap:4px;flex:none}
+.task-done svg{width:11px;height:11px;fill:none;stroke:var(--live);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* typing */
+.typing{display:inline-flex;align-items:center;gap:5px;background:rgba(17,12,10,.05);border:1px solid rgba(17,12,10,.10);border-radius:16px;padding:12px 15px;align-self:flex-start}
+.typing span{width:6px;height:6px;border-radius:50%;background:rgba(23,19,16,.42);animation:blink 1.3s infinite both}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
+/* confirm */
+.cta{background:var(--accent);color:#fff;border-radius:999px;padding:14px;text-align:center;font-size:14px;font-weight:700;letter-spacing:-.01em;border:0;width:100%;font-family:inherit;cursor:pointer;transition:.15s;box-shadow:0 8px 24px rgba(255,107,70,.4)}
+.cta:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(255,107,70,.5)}
+.cta.two{display:flex;justify-content:space-between;padding:14px 20px}
+.cta.two span:last-child{opacity:.9;font-weight:600}
+.cta-alt{margin-top:9px;text-align:center;font-size:11.5px;color:rgba(23,19,16,.55)}
+.conf{text-align:center;padding:14px 0 6px}
+.conf-b{width:44px;height:44px;border-radius:50%;background:rgba(18,163,98,.14);display:grid;place-items:center;margin:0 auto}
+.conf-b svg{width:20px;height:20px;fill:none;stroke:var(--live);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.conf-t{margin-top:13px;color:var(--ink);font-size:15.5px;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.conf-s{margin-top:6px;color:rgba(23,19,16,.55);font-size:11.5px;line-height:1.45;max-width:30ch;margin-left:auto;margin-right:auto}
+.replay{display:block;margin:0 auto;background:none;border:0;color:var(--accent-ink);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;padding:6px}
+
+/* input bar */
+.a-bar{margin-top:12px;display:flex;align-items:center;gap:9px;flex:none}
+.a-plus{width:38px;height:38px;border-radius:50%;background:rgba(17,12,10,.06);display:grid;place-items:center;color:rgba(23,19,16,.7);font-size:17px;font-weight:300;flex:none}
+.a-input{flex:1;height:38px;border-radius:999px;background:rgba(17,12,10,.04);border:1px solid rgba(17,12,10,.09);display:flex;align-items:center;padding:0 15px;color:rgba(23,19,16,.5);font-size:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.a-mic{width:38px;height:38px;border-radius:50%;background:#EF3D2E;display:grid;place-items:center;flex:none}
+.a-mic svg{width:14px;height:14px;fill:#fff}
+.homebar{width:112px;height:4px;border-radius:99px;background:rgba(23,19,16,.22);margin:11px auto 0;flex:none}
+
+/* controls */
+.controls{display:flex;align-items:center;gap:10px}
+.ctrl{width:46px;height:46px;border-radius:50%;background:var(--surface);border:1px solid var(--line-strong);color:var(--ink);display:grid;place-items:center;cursor:pointer;font-family:inherit;transition:.15s}
+.ctrl:hover{background:var(--surface-2);border-color:var(--ink-4)}
+.ctrl svg{width:17px;height:17px;fill:currentColor}
+.ctrl.play{width:58px;height:58px;background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(255,107,70,.4)}
+.ctrl.play:hover{transform:translateY(-1px)}
+.ctrl.play svg{width:22px;height:22px}
+.ctrl:disabled{opacity:.35;cursor:default;transform:none}
+.ctrl-hint{font-size:11px;color:var(--ink-4);text-align:center}
+.ctrl-hint kbd{font-family:var(--font);font-size:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink-3)}
+
+/* insight */
+.insight{position:sticky;top:calc(var(--nav-h) + 20px);border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:24px;backdrop-filter:blur(8px)}
+@media(max-width:1120px){.insight{position:static}}
+.ins-cap{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.ins-h{margin-top:10px;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.ins-d{margin-top:10px;font-size:13px;color:var(--ink-3);line-height:1.55}
+.phases{margin-top:20px;display:flex;flex-direction:column;gap:2px}
+.phase{display:flex;align-items:center;gap:11px;padding:9px 0}
+.phase-n{width:24px;height:24px;border-radius:8px;border:1px solid var(--line);color:var(--ink-4);font-size:11px;font-weight:700;display:grid;place-items:center;flex:none;transition:.25s}
+.phase.done .phase-n{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent-ink)}
+.phase.active .phase-n{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.phase-t{font-size:12.5px;color:var(--ink-4);font-weight:500;transition:.25s}
+.phase.done .phase-t{color:var(--ink-2)}
+.phase.active .phase-t{color:var(--ink);font-weight:600}
+.ins-sub{margin-top:8px;font-size:11px;color:var(--ink-4);font-style:italic;line-height:1.45}
+.impact{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.impact-l{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)}
+.impact-chips{margin-top:11px;display:flex;flex-wrap:wrap;gap:7px}
+.impact-chip{font-size:11px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:999px;padding:6px 11px}
+.impact-note{margin-top:12px;font-size:10.5px;color:var(--ink-4);line-height:1.5}
+
+/* ---------- BIG IDEAS ---------- */
+.ideas{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+@media(max-width:900px){.ideas{grid-template-columns:1fr}}
+.idea{border:1px solid var(--line);border-radius:20px;background:var(--surface);padding:30px 26px;transition:.2s}
+.idea:hover{border-color:var(--line-strong);transform:translateY(-3px)}
+.idea-n{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.idea-t{margin-top:16px;font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.idea-d{margin-top:12px;font-size:14px;color:var(--ink-3);line-height:1.6}
+
+/* ---------- IMPACT ---------- */
+.levers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+@media(max-width:900px){.levers{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.levers{grid-template-columns:1fr}}
+.lever{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:22px}
+.lever-ic{width:38px;height:38px;border-radius:11px;background:var(--accent-soft);border:1px solid var(--accent-line);display:grid;place-items:center;font-size:18px}
+.lever-t{margin-top:15px;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.lever-d{margin-top:7px;font-size:13px;color:var(--ink-3);line-height:1.55}
+.disclaimer{margin-top:26px;font-size:12.5px;color:var(--ink-4);line-height:1.6;max-width:80ch;padding:14px 18px;border:1px dashed var(--line-strong);border-radius:12px;background:rgba(17,12,10,.02)}
+.disclaimer b{color:var(--ink-3)}
+
+/* ---------- PROOF ---------- */
+.proof-grid{margin-top:40px;display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center}
+@media(max-width:860px){.proof-grid{grid-template-columns:1fr;gap:26px}}
+.proof-phone{width:270px;height:560px;margin:0 auto;border-radius:40px;background:#1A1A1C;padding:7px;border:1px solid rgba(0,0,0,.12);box-shadow:0 30px 70px -32px rgba(23,19,16,.45)}
+.proof-phone .screen{border-radius:34px}
+.proof-phone video{width:100%;height:100%;object-fit:cover;display:block;border-radius:34px}
+.proof-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--live);background:rgba(62,217,145,.1);border:1px solid rgba(62,217,145,.3);border-radius:999px;padding:6px 13px}
+.proof-h{margin-top:16px;font-size:26px;font-weight:800;letter-spacing:-.025em;line-height:1.15}
+.proof-d{margin-top:14px;font-size:15px;color:var(--ink-3);line-height:1.6;max-width:52ch}
+.shots{margin-top:20px;display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.shots img{height:150px;width:auto;border-radius:12px;border:1px solid var(--line-strong);flex:none}
+
+/* ---------- CAPABILITIES ---------- */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+@media(max-width:900px){.caps{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.caps{grid-template-columns:1fr}}
+.cap{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:22px;cursor:pointer;transition:.18s}
+.cap:hover{border-color:var(--accent-line);background:var(--accent-soft)}
+.cap-ic{font-size:22px}
+.cap-t{margin-top:13px;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.cap-d{margin-top:7px;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+.cap-ex{margin-top:11px;font-size:11.5px;color:var(--accent-ink);font-style:italic;line-height:1.4}
+
+/* ---------- CHANGELOG ---------- */
+.clog{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+@media(max-width:900px){.clog{grid-template-columns:1fr}}
+.clog-col{border:1px solid var(--line);border-radius:18px;background:var(--surface);padding:24px}
+.clog-h{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;letter-spacing:.02em}
+.clog-h .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.clog-h.keep .dot{background:var(--violet)}
+.clog-h.imp .dot{background:var(--accent)}
+.clog-h.add .dot{background:var(--live)}
+.clog-list{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.clog-list li{font-size:13px;color:var(--ink-3);line-height:1.5;padding-left:18px;position:relative}
+.clog-list li:before{content:'';position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--line-strong)}
+.clog-list li b{color:var(--ink);font-weight:600}
+
+/* ---------- CTA BAND ---------- */
+.band{margin-top:40px;border:1px solid var(--accent-line);border-radius:24px;background:linear-gradient(135deg,var(--accent-soft),rgba(126,94,255,.1));padding:48px 40px;text-align:center}
+.band h3{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.1;max-width:22ch;margin:0 auto}
+.band p{margin:16px auto 0;font-size:16px;color:var(--ink-2);max-width:52ch;line-height:1.6}
+@media(max-width:600px){.band{padding:34px 22px}.band h3{font-size:24px}}
+
+footer{padding:40px 0;margin-top:40px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-4);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ============================================================
+   RAPPI LIGHT — phone UI rebuilt from Figma (Adri in Rappi Light)
+   ============================================================ */
+.screen{background:#F1F2F4 !important}
+.screen:before{background:linear-gradient(180deg,#F7F8FA,#EFF1F4 45%,#ECEEF1) !important}
+.screen:after{display:none !important}
+/* keep the real (dark) reorder clip visible in the proof phone */
+.proof-phone .screen{background:#000 !important}
+.proof-phone .screen:before,.proof-phone .screen:after{display:none !important}
+.sc{padding:0 !important}
+.notch{background:#1A1A1C}
+.phone *{font-family:var(--font)}
+
+/* header: 3 floating circle buttons */
+.a-top{display:flex !important;align-items:center;justify-content:space-between;padding:18px 16px 4px !important}
+.rtop-r{display:flex;align-items:center;gap:8px}
+.rc{width:36px;height:36px;border-radius:50%;background:#fff;border:0;padding:0;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 13px rgba(16,24,40,.10)}
+.rc img{width:19px;height:19px;display:block}
+
+/* message stream */
+.a-body{margin-top:8px !important;padding:2px 16px 4px !important;gap:13px !important}
+.a-foot{padding:0 16px !important}
+
+/* user → TÚ card */
+.umsg{align-items:stretch !important;gap:0 !important}
+.ucard{background:#fff;border-radius:20px;padding:15px 17px;box-shadow:0 8px 14px rgba(16,24,40,.07)}
+.ulbl{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#aeb4bf}
+.utext{margin-top:7px;font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.22;color:#15110F}
+.uphoto{border:1px solid #e6e8ec !important;align-self:flex-start}
+.uphoto .pc{background:#fff !important;color:#15110F !important;font-weight:700}
+
+/* assistant plain bold text */
+.a-line{color:#15110F !important;font-size:16px !important;font-weight:800 !important;line-height:1.3 !important}
+.a-line b{color:#15110F !important;font-weight:800 !important}
+.a-line .soft{font-weight:600 !important;color:#5b626e !important}
+
+/* typing pill */
+.typing{background:#fff !important;border:0 !important;box-shadow:0 8px 13px rgba(16,24,40,.07) !important;border-radius:999px !important;padding:12px 15px !important}
+.typing span{background:#FF2550 !important;width:6px !important;height:6px !important}
+.tlbl{font-size:13px;font-weight:600;color:#9aa0ab;margin-left:5px;align-self:center}
+
+/* understand card */
+.und{background:#fff !important;border:0 !important;box-shadow:0 8px 13px rgba(16,24,40,.07) !important;border-radius:18px !important;padding:14px !important}
+.und-l{color:#D9430F !important}
+.und-t{color:#15110F !important;font-weight:800 !important}
+.chip{background:#f3f4f6 !important;border:0 !important;color:#5b626e !important}
+.chip.on{background:#FFF1EC !important;color:#D9430F !important;border:0 !important}
+
+/* ===== Figma product card (Adri-in-Rappi-Light · node 387:44709) ===== */
+.gcard{position:relative;background:#fff !important;border:0 !important;border-radius:16px !important;padding:12px !important;box-shadow:0 8px 13px rgba(16,24,40,.09) !important}
+.gcard+.gcard{margin-top:12px}
+.gcard.pick{box-shadow:0 10px 20px rgba(255,107,70,.18) !important;outline:1.5px solid var(--accent-line);outline-offset:0}
+.gc-edit{position:absolute;top:8px;right:8px;width:30px;height:30px;border:0;border-radius:50%;background:#eceff3;display:grid;place-items:center;cursor:pointer;color:#464d59;padding:0}
+.gc-edit svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gc-row{display:flex;gap:10px;align-items:flex-start}
+.gc-img{width:56px;height:56px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:28px;line-height:1;background:linear-gradient(135deg,#f4f5f7,#e9ebef);border:1px solid #eceff3}
+.gc-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.gc-info{display:flex;flex-direction:column;gap:3px;padding-right:26px}
+.gc-top{display:flex;align-items:center;gap:8px}
+.gc-name{flex:1;min-width:0;font-size:14px;font-weight:700;color:#464d59;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-best{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink)}
+.gc-best svg{width:10px;height:10px;fill:var(--accent)}
+.gc-price{font-size:15px;font-weight:800;color:#15110F;line-height:1.1;font-variant-numeric:tabular-nums}
+.gc-sub{font-size:12px;font-weight:500;color:#464d59;opacity:.8;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-actions{display:flex;align-items:center;gap:8px;margin-top:8px}
+.gc-step{display:flex;align-items:center;gap:10px;background:#fff;border-radius:18px;padding:5px 11px;box-shadow:0 6px 22px rgba(43,56,76,.12);flex:none}
+.gc-step span{font-size:16px;font-weight:700;color:#15110F;line-height:1;width:12px;text-align:center}
+.gc-step b{font-size:13px;font-weight:800;color:#15110F;min-width:12px;text-align:center}
+.gc-add{flex:1;background:#15110F;color:#fff;border:0;border-radius:80px;height:30px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:-.01em}
+.mini{color:#D9430F !important}
+.vtag{flex:none;font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#D9430F !important;background:#FFF1EC !important;border:0 !important;border-radius:6px;padding:3px 6px}
+
+/* ===== Conversational Search (vision) ===== */
+.srch{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:12px 16px;box-shadow:0 8px 13px rgba(16,24,40,.09)}
+.srch-ic{flex:none;width:18px;height:18px;color:#9aa0ac;display:grid;place-items:center}
+.srch-ic svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
+.srch-tx{font-size:13.5px;font-weight:600;color:#15110F;line-height:1.3}
+.srch-caret{display:inline-block;width:1.5px;height:15px;margin-left:2px;vertical-align:-2px;background:var(--accent);animation:srchBlink 1s steps(1) infinite}
+@keyframes srchBlink{50%{opacity:0}}
+.router{display:flex;flex-direction:column;gap:8px;margin-top:11px}
+.route-row{display:flex;align-items:center;gap:10px;background:#F6F7F9;border-radius:13px;padding:10px 11px}
+.route-row.on{background:#FFF1EC;outline:1.5px solid var(--accent-line)}
+.route-ic{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
+.route-ic.s{background:#eceff3;color:#8a909b}
+.route-ic.s svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
+.route-ic.a{background:var(--accent)}
+.route-ic.a svg{width:14px;height:14px;fill:#fff}
+.route-m{flex:1;min-width:0}
+.route-q{font-size:12.5px;font-weight:700;color:#15110F;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.route-d{font-size:10.5px;font-weight:600;color:#8a909b;margin-top:2px}
+.route-tag{flex:none;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:999px;padding:4px 9px}
+.route-tag.off{color:#8a909b;background:#eceff3}
+.handoff{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:11.5px;font-weight:700;color:var(--accent-ink)}
+.handoff-dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(255,107,70,.5);animation:handoffPulse 1.3s ease-out infinite}
+@keyframes handoffPulse{0%{box-shadow:0 0 0 0 rgba(255,107,70,.45)}100%{box-shadow:0 0 0 8px rgba(255,107,70,0)}}
+.save{background:#FFF1EC !important;border:0 !important;color:#B8410F !important}
+.save b{color:#15110F !important}
+.task{background:#fff !important;border:1px solid #eceff3 !important;box-shadow:0 6px 12px rgba(16,24,40,.05) !important}
+.task-t{color:#15110F !important;font-weight:800}
+.task-s{color:#8a909b !important}
+.task-ic{background:#FFF1EC !important;border:0 !important}
+
+/* store basket card (Figma reorder) */
+.stcard{background:#fff;border-radius:22px;padding:13px;box-shadow:0 8px 16px rgba(16,24,40,.10);align-self:flex-start}
+.stcard-h{display:flex;align-items:center;gap:8px;height:30px}
+.stcard-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px #eceff3}
+.stcard-name{font-size:15px;font-weight:800;color:#15110F;letter-spacing:-.01em}
+.stcard-grid{display:grid;grid-template-columns:repeat(2,99px);gap:9px;margin-top:4px}
+.stp{position:relative;border-radius:16px;overflow:hidden;border:1px solid #eceff3;width:99px;height:99px;background:#263630}
+.stp img{width:100%;height:100%;object-fit:cover;display:block}
+.stp-q{position:absolute;top:6px;right:6px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#15110F;color:#fff;font-size:9.5px;font-weight:800;display:grid;place-items:center;box-sizing:border-box}
+.stcard-f{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:0 2px 2px}
+.stcard-pill{font-size:11px;font-weight:700;color:#464d59;background:#f7f8f9;border-radius:32px;padding:5px 9px}
+.stcard-total{font-size:22px;font-weight:800;color:#15110F;letter-spacing:-.02em}
+
+/* bottom basket bar */
+.bbar{background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -4px 22px rgba(43,56,76,.12);margin:0 -16px;padding:11px 14px 12px}
+.bbar-h{display:flex;align-items:center;gap:8px}
+.bbar-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px #eceff3}
+.bbar-name{font-size:14px;font-weight:800;color:#15110F}
+.bbar-total{margin-left:auto;font-size:15px;font-weight:800;color:#15110F}
+.bbar-exp{width:22px;height:22px;border-radius:50%;background:#15110F;display:grid;place-items:center;margin-left:10px}
+.bbar-exp img{width:12px;height:12px;filter:brightness(0) invert(1)}
+.bbar-thumbs{display:flex;gap:9px;margin-top:11px}
+.bth{position:relative;width:46px;height:46px;border-radius:9px;overflow:hidden;background:#263630}
+.bth img{width:100%;height:100%;object-fit:cover}
+.bth span{position:absolute;top:-3px;right:-3px;width:15px;height:15px;border-radius:50%;background:#34C85A;color:#fff;font-size:8.5px;font-weight:800;display:grid;place-items:center;box-shadow:0 4px 7px rgba(33,34,36,.14)}
+
+/* store chips (mercado picker) */
+.schips{display:flex;flex-wrap:wrap;gap:8px}
+.schip{display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:7px 13px 7px 7px;box-shadow:0 8px 13px rgba(16,24,40,.09)}
+.schip img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.schip b{font-size:13px;font-weight:800;color:#15110F}
+.schip .t{color:#9aa0ab;font-weight:700}
+.sline{font-size:14px;font-weight:700;color:#464d59;margin-top:2px}
+
+/* tracking card */
+.trk{background:#fff;border-radius:20px;padding:16px;box-shadow:0 8px 16px rgba(16,24,40,.10)}
+.trk-h{display:flex;align-items:center;gap:8px}
+.trk-logo{width:26px;height:26px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px #eceff3}
+.trk-h b{font-size:14px;font-weight:800;color:#15110F}
+.trk-h .chev{margin-left:auto;width:26px;height:26px;border-radius:50%;background:#f3f4f6;display:grid;place-items:center;color:#6d727f;font-size:12px}
+.trk-t{margin-top:13px;font-size:17px;font-weight:800;color:#15110F;letter-spacing:-.01em}
+.trk-s{margin-top:3px;font-size:12px;color:#9aa0ab;font-weight:600}
+.trk-bar{margin-top:13px;height:6px;border-radius:99px;background:#eceff3;overflow:hidden}
+.trk-bar i{display:block;height:100%;width:24%;background:#15110F;border-radius:99px}
+.trk-eta{margin-top:13px;display:flex;justify-content:space-between;font-size:12px;color:#464d59;font-weight:700}
+.trk-eta b{color:#15110F}
+
+/* payment preference */
+.ppref{background:#fff;border-radius:20px;padding:4px 16px;box-shadow:0 8px 16px rgba(16,24,40,.10)}
+.ppref-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;cursor:pointer}
+.ppref-row+.ppref-row{border-top:1px solid #f0f1f4}
+.ppref-m{flex:1}
+.ppref-t{font-size:14px;font-weight:800;color:#15110F}
+.ppref-d{margin-top:3px;font-size:11.5px;color:#9aa0ab;line-height:1.4;font-weight:500}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid #d4d7dd;flex:none;margin-top:1px;display:grid;place-items:center}
+.radio.on{border-color:#15110F}
+.radio.on:after{content:'';width:11px;height:11px;border-radius:50%;background:#15110F}
+
+/* cart detail list */
+.cartcard{background:#fff;border-radius:20px;padding:4px 15px;box-shadow:0 8px 16px rgba(16,24,40,.10)}
+.citem{display:flex;align-items:center;gap:12px;padding:12px 0}
+.citem+.citem{border-top:1px solid #eef0f3}
+.cimg{position:relative;width:52px;height:52px;border-radius:10px;overflow:hidden;background:#263630;flex:none}
+.cimg img{width:100%;height:100%;object-fit:cover}
+.cedit{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:5px;background:rgba(255,255,255,.92);display:grid;place-items:center;font-size:8px}
+.cm{flex:1;min-width:0}
+.cname{font-size:13.5px;font-weight:800;color:#15110F;line-height:1.2}
+.cprice{font-size:13px;font-weight:800;color:#15110F;margin-top:3px}
+.csub{font-size:10.5px;color:#9aa0ab;font-weight:500;margin-top:2px;line-height:1.3}
+.cbadge{display:inline-block;font-size:10px;font-weight:800;color:#15110F;background:#FBDC25;border-radius:5px;padding:1px 5px;margin-top:4px;vertical-align:middle}
+.cstrike{font-size:11px;color:#919aaa;text-decoration:line-through;margin-left:6px;font-weight:700}
+.cstep{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:5px 7px;box-shadow:0 6px 12px rgba(16,24,40,.09);flex:none}
+.cstep button{width:24px;height:24px;border:0;background:none;font-size:17px;line-height:1;color:#15110F;cursor:pointer;font-weight:700;padding:0}
+.cstep span{font-size:13px;font-weight:800;min-width:14px;text-align:center}
+
+/* confirm / primary action → black Rappi pill */
+.cta{background:#15110F !important;color:#fff !important;box-shadow:0 10px 24px rgba(21,17,15,.22) !important}
+.cta-alt{color:#9aa0ab !important}
+.conf-b{background:rgba(52,200,90,.14) !important}
+.conf-b svg{stroke:#12A362}
+.conf-t{color:#15110F !important}
+.conf-s{color:#9aa0ab !important}
+.replay{color:#D9430F !important}
+
+/* input bar → rappi light */
+.a-bar{padding:10px 16px 4px !important;gap:10px !important}
+.a-plus{background:#fff !important;color:#15110F !important;box-shadow:0 8px 13px rgba(16,24,40,.09);width:40px !important;height:40px !important}
+.a-plus img{width:19px;height:19px;display:block}
+.a-input{background:#fff !important;border:0 !important;color:#6d727f !important;font-weight:600 !important;box-shadow:0 8px 13px rgba(16,24,40,.09);height:40px !important;display:block !important;line-height:40px !important;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.a-mic{background:linear-gradient(153deg,#FF7A4D 5%,#FF2526 45%,#FF4583 105%) !important;box-shadow:0 10px 20px -10px #ff6b46 !important;border:1.5px solid #fff;width:40px !important;height:40px !important}
+.a-mic img{width:18px;height:18px;display:block}
+.homebar{background:#15110F !important;opacity:.9}
+
+/* word-by-word assistant text reveal */
+.rw{display:inline-block;opacity:0;transform:translateY(5px);animation:rwIn .34s cubic-bezier(.22,.7,.3,1) forwards}
+@keyframes rwIn{to{opacity:1;transform:none}}
+
+/* proof: what's improving */
+.proof-wins{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.proof-wins .pw-k{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4)}
+.pw-item{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--ink-2);line-height:1.5;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.pw-item .pw-ic{font-size:16px;flex:none;line-height:1.3}
+.pw-item b{color:var(--ink)}
+
+/* ===== evolution roadmap ===== */
+.rm-wrap{margin-top:38px}
+.rm-track{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(156px,1fr);overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+.rm-line{position:absolute;left:14px;right:14px;top:27px;height:2px;background:var(--line-strong);z-index:0}
+.rm-col{position:relative;display:flex;flex-direction:column;align-items:center;padding:0 9px;min-width:156px}
+.rm-date{font-size:12px;font-weight:700;color:var(--ink-3);height:18px;text-align:center;width:100%}
+.rm-dot{width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid var(--line-strong);margin:3px auto 18px;position:relative;z-index:1;transition:.22s}
+.rm-card{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 13px;cursor:pointer;transition:.2s;font-family:inherit}
+.rm-card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+.rm-card.on{border-color:var(--accent-line);background:var(--accent-soft);box-shadow:0 12px 26px -16px rgba(255,107,70,.6)}
+.rm-col.on .rm-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.rm-st{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;letter-spacing:.09em}
+.rm-st .s-n{color:var(--ink-4)}
+.rm-st .s-b{display:inline-flex;align-items:center;gap:4px;color:var(--ink-3)}
+.rm-bd{width:5px;height:5px;border-radius:50%;background:var(--ink-4)}
+.rm-bd.testing{background:var(--violet)} .rm-bd.next{background:var(--accent)} .rm-bd.live{background:var(--live)}
+.rm-name{margin-top:8px;font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.22;color:var(--ink)}
+.rm-detail{margin-top:22px;border:1px solid var(--line);border-radius:20px;padding:26px 28px;background:linear-gradient(180deg,var(--surface),transparent)}
+@media(max-width:700px){.rm-detail{padding:20px}}
+.rm-d-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rm-verb{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:999px;padding:5px 12px}
+.rm-d-stage{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-4)}
+.rm-moment{margin-top:14px;font-size:28px;font-weight:800;letter-spacing:-.025em;line-height:1.12;max-width:24ch}
+@media(max-width:700px){.rm-moment{font-size:21px}}
+.rm-grid{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.rm-grid{grid-template-columns:1fr;gap:16px}}
+.rm-k{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)}
+.rm-tx{margin-top:7px;font-size:14.5px;color:var(--ink-2);line-height:1.6}
+.rm-anim{animation:rmRise .4s cubic-bezier(.22,.7,.3,1) both}
+@keyframes rmRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 1.6l2.1 6.6 6.9 2.1-6.9 2.1-2.1 6.9-2.1-6.9-6.9-2.1 6.9-2.1z"/></svg></div>
+      <div class="brand-name">AI <span>Assistant</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="#vision">Vision</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#ideas">Why it matters</a>
+      <a href="#impact">Business value</a>
+      <a href="#roadmap">Shipping now</a>
+      <a href="#evolution">Roadmap</a>
+    </div>
+    <button class="nav-cta" onclick="enterDemo()">▶ Investor Demo Mode</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="vision">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <span class="eyebrow"><i></i><span class="eyebrow-t">Rappi · The future of commerce</span></span>
+        <h1>The fastest way to <em>get things done</em>.</h1>
+        <p class="hero-copy">Rappi is becoming an intelligent assistant that understands what you want and gets it done, across restaurants, groceries, pharmacy and more. Less browsing. Fewer decisions. One conversation.</p>
+        <div class="hero-actions">
+          <button class="btn btn-pri" onclick="enterDemo()">▶ Start the live demo</button>
+          <a class="btn btn-sec" href="#ideas">See why it matters</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stage">
+          <div class="bolita-wrap">
+            <button class="bolita" onclick="enterDemo()" aria-label="Open AI Assistant">
+              <span class="bolita-ring"></span>
+              <span class="bolita-ring d2"></span>
+              <img class="bolita-neon" src="assets/rappi-circle-neon.svg" alt="">
+              <span class="bolita-face">
+                <img class="bolita-mic" src="assets/rappi-mic.svg" alt="">
+                <span class="bolita-ai">Ai</span>
+              </span>
+            </button>
+            <div class="bolita-cap">
+              <b>Just ask, Rappi does the rest.</b>
+              <span>Tap to start a conversation.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evo">
+      <div class="evo-row">
+        <div class="evo-tag old">Today</div>
+        <div class="evo-steps">
+          <span class="evo-pill">Browse</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">Search</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">Discover</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">Decide</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">Purchase</span>
+        </div>
+      </div>
+      <div class="evo-row is-new">
+        <div class="evo-tag new">With AI Assistant</div>
+        <div class="evo-steps">
+          <span class="evo-pill">Express intent</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">AI understands</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">AI acts</span><span class="evo-arrow">→</span>
+          <span class="evo-pill">You confirm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- DEMO -->
+<section class="sec demo" id="demo">
+  <div class="wrap">
+    <div class="demo-top">
+      <div>
+        <div class="sec-k"><i></i> Live product demonstration</div>
+        <h2 class="sec-h">See the assistant get real things done.</h2>
+        <p class="sec-sub">Pick a scenario. Watch the assistant go from a natural request to a ready-to-confirm outcome, the full <b>intent → understands → acts → confirm</b> loop. Every scenario runs deterministically, no backend required.</p>
+      </div>
+      <div class="demo-mode"><i></i> Investor Demo Mode</div>
+    </div>
+
+    <div class="demo-grid">
+      <!-- RAIL -->
+      <div class="rail">
+        <div class="rail-h">Prepared scenarios</div>
+        <div class="rail-scroll" id="rail"></div>
+      </div>
+
+      <!-- STAGE -->
+      <div class="stage">
+        <div class="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="sc">
+              <div class="a-top">
+                <button class="rc" aria-label="Close"><img src="assets/rappi/ic-close.svg" alt=""></button>
+                <div class="rtop-r">
+                  <button class="rc" aria-label="Settings"><img src="assets/rappi/ic-settings.svg" alt=""></button>
+                  <button class="rc" aria-label="Sound"><img src="assets/rappi/ic-volume.svg" alt=""></button>
+                </div>
+              </div>
+              <div class="a-body" id="stream"></div>
+              <div class="a-foot" id="foot"></div>
+              <div class="a-bar">
+                <div class="a-plus"><img src="assets/rappi/ic-add.svg" alt=""></div>
+                <div class="a-input" id="inputBar">Ask me anything</div>
+                <div class="a-mic"><img src="assets/rappi/ic-voice.svg" alt=""></div>
+              </div>
+              <div class="homebar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="ctrl play" id="btnPlay" onclick="demoToggle()" aria-label="Play / pause"><svg id="playIcon" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg></button>
+        </div>
+        <div class="ctrl-hint">Presenter keys: <kbd>Space</kbd> play · <kbd>1</kbd>–<kbd>7</kbd> scenario</div>
+      </div>
+
+      <!-- INSIGHT -->
+      <aside class="insight" id="insight"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- BIG IDEAS -->
+<section class="sec" id="ideas">
+  <div class="wrap">
+    <div class="sec-k"><i></i> Why this matters</div>
+    <h2 class="sec-h">Three ideas behind the opportunity.</h2>
+    <div class="ideas">
+      <div class="idea">
+        <div class="idea-n">01</div>
+        <div class="idea-t">AI changes how people buy.</div>
+        <div class="idea-d">Intent replaces navigation. Instead of browsing, searching and comparing, users say what they want, and the assistant removes the friction, the decisions and the taps between them and done.</div>
+      </div>
+      <div class="idea">
+        <div class="idea-n">02</div>
+        <div class="idea-t">Rappi can own intelligent commerce.</div>
+        <div class="idea-d">One assistant already connects restaurants, Turbo, supermarkets and pharmacy. Few companies have this density of merchants, products and real-time logistics in a single app to orchestrate on the user's behalf.</div>
+      </div>
+      <div class="idea">
+        <div class="idea-n">03</div>
+        <div class="idea-t">This unlocks new value.</div>
+        <div class="idea-d">Faster task completion and cross-vertical orchestration create levers across conversion, frequency, order value and retention, turning a super-app into an AI commerce platform.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="sec" id="impact" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-k"><i></i> Business value</div>
+    <h2 class="sec-h">Where AI commerce can move the business.</h2>
+    <p class="sec-sub">A single assistant acting across verticals creates value levers a traditional browse-and-search app cannot reach.</p>
+    <div class="levers">
+      <div class="lever"><div class="lever-ic">⚡</div><div class="lever-t">Conversion</div><div class="lever-d">Fewer steps from intent to checkout means fewer drop-offs along the funnel.</div></div>
+      <div class="lever"><div class="lever-ic">🔁</div><div class="lever-t">Purchase frequency</div><div class="lever-d">One-tap reorder and proactive nudges lower the effort of buying again.</div></div>
+      <div class="lever"><div class="lever-ic">🧺</div><div class="lever-t">Average order value</div><div class="lever-d">Complete baskets for a goal or occasion naturally bundle more items.</div></div>
+      <div class="lever"><div class="lever-ic">🔀</div><div class="lever-t">Cross-vertical penetration</div><div class="lever-d">A single request can span restaurants, Turbo, market and pharmacy at once.</div></div>
+      <div class="lever"><div class="lever-ic">💜</div><div class="lever-t">Retention</div><div class="lever-d">An assistant that remembers and anticipates becomes a daily habit.</div></div>
+      <div class="lever"><div class="lever-ic">🔎</div><div class="lever-t">Discovery efficiency</div><div class="lever-d">Curated, intent-based results surface the right products faster.</div></div>
+    </div>
+    <p class="disclaimer"><b>Note on figures:</b> The levers above describe where this product can create value. They are not claims of achieved results. The only in-market data point referenced in this demo is the addressable base for Reorder (restaurant repeat-purchase behavior); any dollar amounts inside the phone are illustrative mock data for demonstration, not forecasts.</p>
+  </div>
+</section>
+
+<!-- PROOF / SHIPPING NOW -->
+<section class="sec" id="roadmap" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-k"><i></i> This is real</div>
+    <h2 class="sec-h">Not a concept deck, it's already shipping.</h2>
+    <div class="proof-grid">
+      <div>
+        <div class="proof-phone">
+          <div class="screen"><video src="assets/reorder-oneshot.mp4" autoplay muted loop playsinline></video></div>
+        </div>
+      </div>
+      <div>
+        <span class="proof-badge">● In testing now</span>
+        <div class="proof-h">One-shot Reorder, live in beta.</div>
+        <p class="proof-d">The first capability, rebuilding a previous order in a single tap, is already in internal beta testing. The addressable base is real: of active Restaurants users, <b>31.37%</b> repeated at least one same product, ≈ <b>584,000 users</b>. The clip on the left is captured from the actual product.</p>
+        <div class="proof-wins">
+          <div class="pw-k">What's improving next</div>
+          <div class="pw-item"><span class="pw-ic">🎨</span><div><b>Migrating to a new all-white UI.</b> The assistant is moving to the cleaner, lighter Rappi design shown throughout this demo — brighter, calmer and more premium than the current build.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="sec" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-k"><i></i> What it can do</div>
+    <h2 class="sec-h">Six capabilities, one assistant.</h2>
+    <p class="sec-sub">Each capability maps to a scenario in the live demo above. Click one to play it.</p>
+    <div class="caps" id="caps"></div>
+  </div>
+</section>
+
+<!-- EVOLUTION ROADMAP -->
+<section class="sec" id="evolution" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-k"><i></i> Where it's going</div>
+    <h2 class="sec-h">The evolution roadmap.</h2>
+    <p class="sec-sub">The assistant progressively becomes more intelligent, proactive and deeply integrated across the Rappi experience, <b>fully launched by February 2027</b>. <b>Tap any stage</b> to preview how it moves.</p>
+    <div class="rm-wrap">
+      <div class="rm-track" id="rmTrack"><div class="rm-line"></div></div>
+      <div class="rm-detail" id="rmDetail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="sec" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="band">
+      <h3>The goal isn't a chatbot. It's an AI commerce platform.</h3>
+      <p>Rappi has the merchants, the products and the logistics. The assistant is how it all comes together for the user.</p>
+      <div class="hero-actions"><button class="btn btn-pri" onclick="enterDemo()">▶ Run the demo again</button></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><footer>
+  <span>Rappi AI Assistant · Investor demonstration</span>
+  <span>Simulated experience · mock data for illustration</span>
+</footer></div>
+
+<script>
+const ICON = {
+  spark:'<svg viewBox="0 0 24 24"><path d="M12 1.6l2.1 6.6 6.9 2.1-6.9 2.1-2.1 6.9-2.1-6.9-6.9-2.1 6.9-2.1z"/></svg>',
+  check:'<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>',
+  text:'<svg viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h10"/></svg>',
+  voice:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0"/></svg>',
+  image:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M21 16l-5-5-9 9"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>'
+};
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const PHASES = ['Express intent','AI understands','AI acts','You confirm'];
+
+/* ---------- step builders ---------- */
+const userStep = (text, mode='text', photo=null, tlbl=null) => ({
+  phase:0, hold:1600, tlbl, render:() => `<div class="umsg">
+    ${photo?`<div class="uphoto"><div class="ph"></div><div class="pc">${text}</div></div>`
+           :`<div class="ucard"><div class="ulbl">You</div><div class="utext">${text}</div></div>`}
+  </div>`
+});
+const understandStep = (interp, chips) => ({
+  phase:1, hold:1900, typing:true, render:() => `<div class="und">
+    <div class="und-l">${ICON.spark} Got it</div>
+    <div class="und-t">${interp}</div>
+    <div class="chipset">${chips.map(c=>`<span class="chip on">${c}</span>`).join('')}</div>
+  </div>`
+});
+const sayStep = (html, phase=2, hold=1700) => ({phase, hold, typing:true, render:()=>`<div class="a-line">${html}</div>`});
+const cardsStep = (html, phase=2, hold=1900) => ({phase, hold, typing:true, render:()=>html});
+const card = (name, sub, price, {pick=false, sq=false, vtag=null, emoji=''}={}) => `
+  <div class="gcard ${pick?'pick':''}">
+    <button class="gc-edit" type="button" aria-label="Edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
+    <div class="gc-row">
+      <div class="gc-img">${emoji}</div>
+      <div class="gc-main">
+        <div class="gc-info">
+          <div class="gc-top"><span class="gc-name">${name}</span>${vtag?`<span class="vtag">${vtag}</span>`:''}</div>
+          ${pick?`<div class="gc-best">${ICON.spark} Best match</div>`:''}
+          ${price?`<div class="gc-price">$${fmt(price)}</div>`:''}
+          <div class="gc-sub">${sub}</div>
+        </div>
+        <div class="gc-actions">
+          <div class="gc-step"><span>−</span><b>1</b><span>+</span></div>
+          <button class="gc-add" type="button">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+const taskRow = (ic, t, s) => `<div class="task"><div class="task-ic">${ic}</div>
+  <div class="task-m"><div class="task-t">${t}</div><div class="task-s">${s}</div></div>
+  <div class="task-done"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg> Ready</div></div>`;
+const saveStep = (txt, hold=1600) => ({phase:2, hold, typing:true, render:()=>`<div class="save">${txt}</div>`});
+const confirmStep = (label, total, altTxt) => ({
+  phase:3, hold:2600, typing:true, confirm:true,
+  foot:`<button class="cta two" data-confirm><span>${label}</span><span>$${fmt(total)}</span></button>
+        <div class="cta-alt">${altTxt||'You confirm. You stay in control.'}</div>`,
+  render:()=>`<div class="a-line">Everything's ready to confirm, <b>your call</b>.</div>`
+});
+const doneStep = (title, sub) => ({
+  phase:3, hold:3200, typing:false,
+  foot:`<button class="replay" onclick="demoReset()">↺ Play again</button>`,
+  render:()=>`<div class="conf"><div class="conf-b"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></div>
+    <div class="conf-t">${title}</div><div class="conf-s">${sub}</div></div>`
+});
+
+/* ---------- Rappi Light components (figma-faithful) ---------- */
+const RP = 'assets/rappi/';
+const SB = RP+'sb-logo.png';
+const P = {matcha:RP+'p-matcha.png', dragon:RP+'p-dragonfruit.png', vitali:RP+'p-vitali.png', vitalgreen:RP+'p-vitalgreen.png', frap:RP+'p-frappuccino.png', torta:RP+'p-torta.png'};
+const STORES = [
+  [RP+'st-turbo.png','Turbo','10 min'],[RP+'st-carulla.png','Carulla','35 min'],
+  [RP+'st-exito.png','Éxito','60 min'],[RP+'st-jumbo.png','Jumbo','60 min'],
+  [RP+'st-olimpica.png','Olímpica','3 min'],[RP+'st-makro.png','Makro','6 min'],
+  [RP+'st-pricesmart.png','PriceSmart','75 min']
+];
+const basketBarHTML = (logo,name,imgs,total)=>`<div class="bbar">
+  <div class="bbar-h"><img class="bbar-logo" src="${logo}" alt=""><span class="bbar-name">${name}</span>
+    <span class="bbar-total">$${fmt(total)}</span>
+    <span class="bbar-exp"><img src="${RP}ic-expand.svg" alt=""></span></div>
+  <div class="bbar-thumbs">${imgs.map(i=>`<div class="bth"><img src="${i}" alt=""><span>1</span></div>`).join('')}</div>
+</div>`;
+const storeCardStep = (logo,name,imgs,count,total,basketTotal) => ({
+  phase:2, hold:2600, typing:true,
+  foot: basketBarHTML(logo,name,imgs,basketTotal),
+  render:()=>`<div class="stcard">
+    <div class="stcard-h"><img class="stcard-logo" src="${logo}" alt=""><span class="stcard-name">${name}</span></div>
+    <div class="stcard-grid">${imgs.map(i=>`<div class="stp"><img src="${i}" alt=""><span class="stp-q">1</span></div>`).join('')}</div>
+    <div class="stcard-f"><span class="stcard-pill">${count} items</span><span class="stcard-total">$${fmt(total)}</span></div>
+  </div>`
+});
+const ci = (img,name,price,{sub=null,badge=null,strike=null,q=1}={}) => `<div class="citem">
+  <div class="cimg"><img src="${img}" alt=""><span class="cedit">✎</span></div>
+  <div class="cm"><div class="cname">${name}</div>
+    <div class="cprice">$${fmt(price)}${strike?`<span class="cstrike">$${fmt(strike)}</span>`:''}</div>
+    ${badge?`<span class="cbadge">${badge}</span>`:''}${sub?`<div class="csub">${sub}</div>`:''}
+  </div>
+  <div class="cstep"><button type="button">−</button><span>${q}</span><button type="button">+</button></div>
+</div>`;
+const cartDetailStep = (title, itemsHTML, total) => ({
+  phase:2, hold:3200, typing:true,
+  foot:`<button class="cta" data-confirm>Place order · $${fmt(total)}</button>`,
+  render:()=>`<div class="a-line" style="margin-bottom:11px">${title}</div><div class="cartcard">${itemsHTML}</div>`
+});
+const trackingStep = (logo, store, title, eta) => ({
+  phase:3, hold:2800, typing:true,
+  render:()=>`<div class="a-line" style="margin-bottom:11px">${title}</div>
+  <div class="trk"><div class="trk-h"><img class="trk-logo" src="${logo}" alt=""><b>${store}</b><span class="chev">›</span></div>
+    <div class="trk-t">Order in progress</div><div class="trk-s">Track your order in real time</div>
+    <div class="trk-bar"><i></i></div>
+    <div class="trk-eta"><span>Estimated delivery</span><b>${eta}</b></div></div>`
+});
+const payPrefStep = (q) => ({
+  phase:3, hold:3400, typing:true,
+  foot:`<button class="cta" data-confirm>Save and continue</button>`,
+  render:()=>`<div class="a-line" style="margin-bottom:11px">${q}</div>
+  <div class="ppref">
+    <div class="ppref-row"><div class="ppref-m"><div class="ppref-t">Order directly, no confirmation</div><div class="ppref-d">I'll place the order at this store without confirming the payment method or tip.</div></div><div class="radio on"></div></div>
+    <div class="ppref-row"><div class="ppref-m"><div class="ppref-t">Review before ordering</div><div class="ppref-d">I'll confirm the payment method and tip with you before ordering.</div></div><div class="radio"></div></div>
+  </div>`
+});
+const storeChipsStep = (title) => ({
+  phase:1, hold:2600, typing:true,
+  render:()=>`<div class="a-line" style="margin-bottom:12px">${title}</div>
+  <div class="schips">${STORES.map(s=>`<span class="schip"><img src="${s[0]}" alt=""><b>${s[1]}</b><span class="t">· ${s[2]}</span></span>`).join('')}</div>
+  <div class="sline">Or tell me a store</div>`
+});
+
+/* search → AI Assistant handoff (vision) */
+const searchStep = (query) => ({
+  phase:0, hold:2100, tlbl:'Rappi Search',
+  render:()=>`<div class="srch"><span class="srch-ic">${ICON.search}</span><span class="srch-tx">${query}<span class="srch-caret"></span></span></div>`
+});
+const routerStep = (searchEx, convoEx) => ({
+  phase:1, hold:2900, typing:true,
+  render:()=>`<div class="und"><div class="und-l">${ICON.spark} Search read your intent</div>
+    <div class="router">
+      <div class="route-row"><span class="route-ic s">${ICON.search}</span>
+        <div class="route-m"><div class="route-q">“${searchEx}”</div><div class="route-d">Keyword lookup</div></div>
+        <span class="route-tag off">Stays in Search</span></div>
+      <div class="route-row on"><span class="route-ic a">${ICON.spark}</span>
+        <div class="route-m"><div class="route-q">“${convoEx}”</div><div class="route-d">Open-ended, with context</div></div>
+        <span class="route-tag">AI Assistant</span></div>
+    </div>
+    <div class="handoff"><span class="handoff-dot"></span>Conversational request · opening the AI Assistant…</div></div>`
+});
+
+/* ---------- SCENARIOS ---------- */
+const SCENARIOS = [
+  {
+    id:'convo', n:'01', cap:'Conversational', title:'Guests over tonight',
+    desc:'“I have friends coming over tonight. Help me get everything ready.”',
+    insightH:'Conversational Commerce', inputPh:'I have friends over tonight…',
+    insightD:'A single open-ended request becomes a complete, cross-vertical plan, snacks and drinks from Turbo plus a main dish from a restaurant, built and ready to confirm.',
+    sub:'In-market the product speaks the user\'s language (LatAm); shown here in English.',
+    impact:['Average order value','Cross-vertical','Conversion'],
+    impactNote:'One intent, multiple verticals, one checkout, a basket a user would rarely assemble manually.',
+    steps:[
+      userStep('I have friends coming over tonight. Help me get everything ready 🎉','voice'),
+      understandStep('Get-together tonight · ~6 people · snacks, drinks and a main dish.',['Today, 8 PM','~6 people','Snacks','Drinks','Main dish']),
+      sayStep('I built a <b>complete plan</b> combining Turbo and a restaurant, ready before 8.'),
+      cardsStep(
+        card('Family pizza x3 · La Nonna','Delivery 7:20 PM · serves 6',58000,{pick:true,vtag:'Restaurant',emoji:'🍕'})+
+        card('Snack platter + ice','Turbo · 12 min',24900,{sq:true,vtag:'Turbo',emoji:'🍿'})+
+        card('Beers and sodas x12','Turbo · 12 min',29900,{sq:true,vtag:'Turbo',emoji:'🍺'})
+      ),
+      saveStep('I\'ll coordinate both deliveries so <b>everything arrives together</b>, before your guests do.'),
+      confirmStep('Confirm the full plan', 112800,'One payment · 2 coordinated deliveries.'),
+      doneStep('Done! Your night is sorted.','Pizza and snacks arrive before 8 PM. I\'ll let you know when each order is on its way.')
+    ]
+  },
+  {
+    id:'reorder', n:'02', cap:'Reorder', title:'My usual breakfast',
+    desc:'“Order my usual breakfast.”',
+    insightH:'Intelligent Reorder', inputPh:'Order my usual breakfast…',
+    insightD:'The assistant recognizes a repeated behavior from order history and rebuilds the exact order, store, items, quantities, ready in one tap. This capability is in beta today.',
+    sub:'Backed by real data: 31.37% of Restaurants users repeat a same product.',
+    impact:['Purchase frequency','Retention','Conversion'],
+    impactNote:'The most repeated behavior in the app turns from 8 taps into 1 decision.',
+    steps:[
+      userStep('Order my usual breakfast ☕','voice',null,'Finding your usual order'),
+      understandStep('Recognized your usual weekday order at Café Juan Valdez.',['Large Americano','Eggs Benedict','Juan Valdez · 93']),
+      sayStep('I rebuilt your exact order, same items, same store.'),
+      cardsStep(
+        card('Large Americano','No sugar · as always',8900,{pick:true,emoji:'☕'})+
+        card('Eggs Benedict','+ fresh orange juice',16000,{emoji:'🍳'})
+      ),
+      sayStep('Arrives in <b>22 min</b>. Confirm it, same as always?'),
+      confirmStep('Confirm · arrives in 22 min', 24900,'Same as your usual order.'),
+      doneStep('Order confirmed.','Your usual breakfast is on its way. One tap, zero friction.')
+    ]
+  },
+  {
+    id:'discovery', n:'03', cap:'Discovery', title:'Healthy dinner, for me',
+    desc:'“Find me something healthy for dinner.”',
+    insightH:'Personalized Discovery', inputPh:'Something healthy for dinner…',
+    insightD:'An open craving becomes a short, personalized shortlist, ranked using the user\'s history and social proof, instead of a catalogue to browse and filter.',
+    sub:'Ranking leans on ratings and what similar users order, not personalization alone.',
+    impact:['Discovery efficiency','Conversion','Frequency'],
+    impactNote:'The blank-page problem disappears: curated results replace browsing and filtering.',
+    steps:[
+      userStep('Find me something healthy for dinner, high in protein 💪','text'),
+      understandStep('Healthy dinner · high protein · fast · based on what you usually pick.',['Healthy','High protein','< 30 min','Based on your history']),
+      sayStep('<b>14 options</b>. These 3 match what you like most.'),
+      cardsStep(
+        card('Poke House · Tuna bowl','42g protein · 520 kcal · 22 min',32000,{pick:true,emoji:'🥗'})+
+        card('Verde Rooftop · Grilled chicken','38g protein · 470 kcal · 27 min',29000,{emoji:'🍗'})+
+        card('Turbo · Greek yogurt + granola','22g protein · 10 min',14900,{sq:true,vtag:'Turbo',emoji:'🥣'})
+      ),
+      sayStep('The Poke House bowl is your best match on taste and delivery time.'),
+      confirmStep('Order the tuna bowl', 32000,'Or tell me and I\'ll show more options.'),
+      doneStep('Enjoy your meal!','Your healthy dinner arrives in 22 min. I learn from every choice.')
+    ]
+  },
+  {
+    id:'multi', n:'04', cap:'Multi-vertical', title:'I feel sick',
+    desc:'“I think I\'m coming down with a cold.”',
+    insightH:'Multi-Vertical Commerce', inputPh:'I feel sick, I think I have a cold…',
+    insightD:'One request orchestrates three verticals at once, pharmacy, restaurant and Turbo, into a single coordinated order. Something no single-vertical app can do.',
+    sub:'Only a super-app with this merchant density can orchestrate across verticals.',
+    impact:['Cross-vertical','Average order value','Retention'],
+    impactNote:'A single intent pulls demand into three verticals that would otherwise be separate sessions, or separate apps.',
+    steps:[
+      userStep('I feel sick, I think I\'m coming down with a cold 🤧','voice'),
+      understandStep('Cold symptoms · prioritizing what helps you today, across stores.',['Pharmacy','Restaurant','Turbo','Arrives today']),
+      sayStep('I prepared everything you need, from <b>3 verticals</b>, in a single order.'),
+      cardsStep(
+        card('Acetaminophen + Vitamin C','Pharmacy · no prescription needed · 25 min',28500,{sq:true,vtag:'Pharmacy',pick:true,emoji:'💊'})+
+        card('Homemade chicken soup','Ajiaco Express · 30 min',19900,{vtag:'Restaurant',emoji:'🍲'})+
+        card('Tissues, ginger tea and honey','Turbo · 12 min',21400,{sq:true,vtag:'Turbo',emoji:'🍵'})
+      ),
+      saveStep('I\'ll coordinate it all so it arrives together and you can <b>rest</b>.'),
+      confirmStep('Confirm all 3 orders', 69800,'One payment · 3 coordinated stores.'),
+      doneStep('Feel better soon 💜','Your 3 orders are on the way. Take care, I\'ll handle the rest.')
+    ]
+  },
+  {
+    id:'photo', n:'05', cap:'From picture', title:'Cook this dish',
+    desc:'Upload a photo → “What do I need to make this?”',
+    insightH:'Multimodal Interaction', inputPh:'📷 What do I need to make this?',
+    insightD:'Text, voice and images are all valid inputs. Here a photo of a dish is recognized, decomposed into ingredients, and turned into a ready grocery basket.',
+    sub:'New input modality (vision), same assistant, same get-it-done loop.',
+    impact:['Discovery efficiency','Average order value','Cross-vertical'],
+    impactNote:'Vision unlocks demand that never starts as a search query.',
+    steps:[
+      userStep('What do I need to make this?','image',true),
+      understandStep('Identified: <b>Pasta Carbonara</b> · 2 servings. Building the ingredient list.',['Pasta','Eggs','Pancetta','Parmesan','Pepper']),
+      sayStep('I found all the ingredients on Turbo, ready in <b>15 min</b>.'),
+      cardsStep(
+        card('Spaghetti 500g + Pancetta 200g','Turbo · recipe base',18600,{sq:true,vtag:'Turbo',pick:true,emoji:'🍝'})+
+        card('Eggs AA x6 + Parmesan','Turbo · 15 min',13900,{sq:true,vtag:'Turbo',emoji:'🧀'})+
+        card('Ground black pepper','Turbo · 15 min',2100,{sq:true,vtag:'Turbo',emoji:'🧂'})
+      ),
+      sayStep('I adjusted the quantities for <b>2 servings</b>. Build the basket?'),
+      confirmStep('Add the ingredients', 34600,'Quantities adjusted to 2 servings.'),
+      doneStep('Time to cook!','Your carbonara ingredients arrive in 15 min. One photo was enough.')
+    ]
+  },
+  {
+    id:'agentic', n:'06', cap:'Agentic', title:'Plan a birthday',
+    desc:'“Organize my daughter\'s birthday this Saturday. We\'re 12.”',
+    insightH:'Agentic Commerce', inputPh:'Organize Saturday\'s birthday party…',
+    insightD:'The assistant moves beyond suggestions to task completion: it breaks a goal into sub-tasks, prepares each across different merchants, and brings it to a single checkout, with the user confirming.',
+    sub:'The capstone: a goal → decomposed → executed → you stay in control.',
+    impact:['Average order value','Cross-vertical','Retention'],
+    impactNote:'Agentic task completion is the largest-basket, highest-intent moment, and the clearest glimpse of the platform.',
+    steps:[
+      userStep('Organize my daughter\'s birthday this Saturday. We\'re 12 🎂','voice'),
+      understandStep('Goal: kids\' party · Saturday · 12 people. I broke it into 4 tasks.',['Cake','Decorations','Snacks','Gift']),
+      sayStep('I prepared each task at the best store. <b>You confirm</b> each one.'),
+      cardsStep(
+        taskRow('🎂','Custom cake for 12','La Dulce Bakery · pickup Saturday 2 PM · $85,000')+
+        taskRow('🎈','Themed decorations','Turbo · balloons, candles, tablecloth · $46,000')+
+        taskRow('🥤','Snacks and drinks','Makro · best price by volume · $72,000')+
+        taskRow('🎁','Surprise gift','Rappi Retail · top sellers for her age · $79,000')
+      ),
+      saveStep('I\'ll coordinate all 4 deliveries for <b>Saturday morning</b>. One payment.'),
+      confirmStep('Confirm all 4 baskets', 282000,'One payment · 4 stores · all for Saturday.'),
+      doneStep('The party is ready! 🎉','I\'ll coordinate all 4 deliveries for Saturday. One goal, handled end to end.')
+    ]
+  },
+  {
+    id:'search', n:'07', cap:'Conversational Search', title:'Search that gets you',
+    desc:'Type in Search → “High-protein dinner under 500 kcal, in 20 min.”',
+    insightH:'Conversational Search', inputPh:'Search understands what you mean…',
+    insightD:'Search becomes the front door to the assistant. Rappi Search reads intent in natural language: plain product lookups stay in Search, while open-ended requests hand off to the AI Assistant, which generates the result.',
+    sub:'The vision: one search box that understands both keywords and conversations.',
+    impact:['Search conversion','Intent capture','Discovery efficiency'],
+    impactNote:'Every search box becomes an entry point to the assistant, no keyword guessing, no stacking filters.',
+    steps:[
+      searchStep('high-protein dinner under 500 kcal, ready in 20 min'),
+      routerStep('chicken breast', 'high-protein dinner under 500 kcal, ready in 20 min'),
+      understandStep('Light dinner · 40g+ protein · under 500 kcal · ≤ 20 min · based on what you usually pick.',['High protein','< 500 kcal','≤ 20 min','From your history']),
+      sayStep('<b>9 results</b> generated for your request. These 3 fit best.'),
+      cardsStep(
+        card('Poke House · Tuna bowl','44g protein · 480 kcal · 18 min',32000,{pick:true,emoji:'🥗'})+
+        card('Verde Rooftop · Grilled chicken','41g protein · 460 kcal · 20 min',29000,{emoji:'🍗'})+
+        card('Turbo · Egg-white omelette kit','38g protein · cook in 12 min',16900,{sq:true,vtag:'Turbo',emoji:'🍳'})
+      ),
+      sayStep('The tuna bowl is your best match on protein, calories and time.'),
+      confirmStep('Order the tuna bowl', 32000,'Started as a search · finished by the assistant.'),
+      doneStep('On its way!','Your high-protein dinner arrives in 18 min. One search became a conversation.')
+    ]
+  }
+];
+
+/* ---------- ENGINE ---------- */
+const stream = document.getElementById('stream');
+const foot = document.getElementById('foot');
+const insightEl = document.getElementById('insight');
+const inputBar = document.getElementById('inputBar');
+const railEl = document.getElementById('rail');
+const capsEl = document.getElementById('caps');
+const playIcon = document.getElementById('playIcon');
+
+let sIdx = 0, step = -1, playing = false, timer = null, nodes = [], maxPhase = 0;
+
+const PLAY_SVG = '<path d="M7 5l12 7-12 7z"/>';
+const PAUSE_SVG = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+
+/* build rail + caps */
+const CAP_META = {
+  convo:{ic:'💬',t:'Conversational Commerce',d:'Express a need in plain language; the assistant builds the basket.',ex:'“Friends over tonight.”'},
+  reorder:{ic:'🔁',t:'Intelligent Reorder',d:'Rebuild a previous order in a single tap.',ex:'“My usual Starbucks matcha.”'},
+  discovery:{ic:'✨',t:'Personalized Discovery',d:'A curated shortlist from intent + history.',ex:'“Healthy dinner.”'},
+  multi:{ic:'🔀',t:'Multi-Vertical Commerce',d:'One request across restaurants, Turbo & pharmacy.',ex:'“I feel sick.”'},
+  photo:{ic:'📷',t:'Multimodal Interaction',d:'Text, voice or a photo, all valid inputs.',ex:'“What do I need to cook this?”'},
+  agentic:{ic:'🤖',t:'Agentic Commerce',d:'A goal decomposed, prepared and brought to checkout.',ex:'“Plan a birthday.”'}
+};
+SCENARIOS.forEach((s,i)=>{
+  const b = document.createElement('button');
+  b.className='scn'; b.dataset.i=i;
+  b.innerHTML = `<div class="scn-top"><span class="scn-n">SCENARIO ${s.n}</span><span class="scn-cap">${s.cap}</span></div>
+    <div class="scn-t">${s.title}</div><div class="scn-d">${s.desc}</div>`;
+  b.onclick=()=>loadScenario(i,true);
+  railEl.appendChild(b);
+
+  const m = CAP_META[s.id];
+  const c = document.createElement('div');
+  c.className='cap';
+  c.innerHTML = `<div class="cap-ic">${m.ic}</div><div class="cap-t">${m.t}</div><div class="cap-d">${m.d}</div><div class="cap-ex">${m.ex}</div>`;
+  c.onclick=()=>{document.getElementById('demo').scrollIntoView({behavior:'smooth'}); loadScenario(i,true);};
+  capsEl.appendChild(c);
+});
+
+function renderInsight(){
+  const s = SCENARIOS[sIdx];
+  insightEl.innerHTML = `
+    <div class="ins-cap">${s.cap} · Scenario ${s.n}</div>
+    <div class="ins-h">${s.insightH}</div>
+    <div class="ins-d">${s.insightD}</div>
+    <div class="phases">
+      ${PHASES.map((p,i)=>`<div class="phase ${i<maxPhase?'done':''} ${i===maxPhase&&step>=0?'active':''}" data-p="${i}">
+        <div class="phase-n">${i<maxPhase?'✓':i+1}</div><div class="phase-t">${p}</div></div>`).join('')}
+    </div>
+    <div class="ins-sub">${s.sub}</div>
+    <div class="impact">
+      <div class="impact-l">Potential business levers</div>
+      <div class="impact-chips">${s.impact.map(x=>`<span class="impact-chip">${x}</span>`).join('')}</div>
+      <div class="impact-note">${s.impactNote}</div>
+    </div>`;
+}
+
+function updatePhase(){
+  let mp = 0;
+  for(let i=0;i<=step;i++) mp = Math.max(mp, SCENARIOS[sIdx].steps[i].phase);
+  maxPhase = mp;
+  renderInsight();
+}
+
+function clearTimer(){ if(timer){ clearTimeout(timer); timer=null; } }
+function removeTyping(){ const t=stream.querySelector('.typing-wrap'); if(t) t.remove(); }
+
+function showTyping(label){
+  removeTyping();
+  const w = document.createElement('div');
+  w.className='typing-wrap msg';
+  w.innerHTML=`<div class="typing"><span></span><span></span><span></span>${label?`<span class="tlbl">${label}</span>`:''}</div>`;
+  stream.appendChild(w);
+  const ph=document.querySelector('.phone'); if(ph) ph.classList.add('thinking');
+  stream.scrollTop = stream.scrollHeight;
+}
+
+// wrap assistant text into per-word spans for a staggered reveal
+function revealWords(scope){
+  scope.querySelectorAll('.a-line').forEach(el=>{
+    el.innerHTML = el.innerHTML.replace(/(<[^>]+>)|([^\s<]+)/g,(m,tag,word)=>tag?tag:`<span class="rw">${word}</span>`);
+    el.querySelectorAll('.rw').forEach((s,i)=>{ s.style.animationDelay=(i*0.045)+'s'; });
+  });
+}
+
+function appendStep(){
+  const st = SCENARIOS[sIdx].steps[step];
+  removeTyping();
+  const node = document.createElement('div');
+  node.className='msg';
+  node.innerHTML = st.render();
+  revealWords(node);
+  const ph=document.querySelector('.phone'); if(ph) ph.classList.remove('thinking');
+  stream.appendChild(node);
+  nodes.push(node);
+  if(st.foot !== undefined) foot.innerHTML = st.foot;
+  else if(st.confirm !== true) foot.innerHTML='';
+  stream.scrollTop = stream.scrollHeight;
+  updatePhase();
+  updateControls();
+}
+
+function loadScenario(i, autoplay){
+  clearTimer(); playing=false;
+  sIdx=i; step=-1; nodes=[]; maxPhase=0;
+  stream.innerHTML=''; foot.innerHTML='';
+  const ph=document.querySelector('.phone'); if(ph) ph.classList.remove('thinking');
+  inputBar.textContent = SCENARIOS[i].inputPh;
+  document.querySelectorAll('.scn').forEach(el=>el.classList.toggle('on', +el.dataset.i===i));
+  renderInsight();
+  updateControls();
+  // render the first (user) step immediately
+  demoNext();
+  if(autoplay){ playing=true; scheduleTick(); }
+  updateControls();
+}
+
+function demoNext(){
+  clearTimer();
+  const steps = SCENARIOS[sIdx].steps;
+  if(step >= steps.length-1){ playing=false; updateControls(); return; }
+  step++;
+  appendStep();
+}
+
+function demoPrev(){
+  clearTimer(); playing=false;
+  if(step<=0) return;
+  removeTyping();
+  const last = nodes.pop(); if(last) last.remove();
+  step--;
+  // restore foot for current step
+  const st = SCENARIOS[sIdx].steps[step];
+  foot.innerHTML = (st.foot!==undefined)?st.foot:'';
+  updatePhase(); updateControls();
+  stream.scrollTop = stream.scrollHeight;
+}
+
+function scheduleTick(){
+  clearTimer();
+  if(!playing) return;
+  const steps = SCENARIOS[sIdx].steps;
+  if(step >= steps.length-1){ playing=false; updateControls(); return; }
+  const cur = steps[step];
+  const nxt = steps[step+1];
+  const hold = cur.hold || 1700;
+  timer = setTimeout(()=>{
+    if(nxt.typing){
+      showTyping(cur.tlbl);
+      timer = setTimeout(()=>{ demoNext(); scheduleTick(); }, cur.tlbl?1150:750);
+    } else {
+      demoNext(); scheduleTick();
+    }
+  }, hold);
+}
+
+function demoToggle(){
+  const steps = SCENARIOS[sIdx].steps;
+  if(step >= steps.length-1){ demoReset(); playing=true; scheduleTick(); updateControls(); return; }
+  playing = !playing;
+  if(playing) scheduleTick(); else clearTimer();
+  updateControls();
+}
+
+function demoReset(){ loadScenario(sIdx,false); }
+
+function updateControls(){
+  const steps = SCENARIOS[sIdx].steps;
+  playIcon.innerHTML = playing ? PAUSE_SVG : PLAY_SVG;
+  const bp=document.getElementById('btnPrev'); if(bp) bp.disabled = step<=0;
+  const bn=document.getElementById('btnNext'); if(bn) bn.disabled = step>=steps.length-1;
+}
+
+/* delegated confirm button */
+foot.addEventListener('click', e=>{ if(e.target.closest('[data-confirm]')){ playing=false; clearTimer(); demoNext(); } });
+
+/* keyboard */
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key===' '){ e.preventDefault(); demoToggle(); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); playing=false; clearTimer(); demoNext(); updateControls(); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); demoPrev(); }
+  else if(/^[1-7]$/.test(e.key)){ const i=+e.key-1; if(i<SCENARIOS.length){ document.getElementById('demo').scrollIntoView({behavior:'smooth'}); loadScenario(i,true);} }
+});
+
+function enterDemo(){
+  document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+  loadScenario(0,true);
+}
+
+/* init (no autoplay until user enters demo) */
+loadScenario(0,false);
+
+/* ---------- EVOLUTION ROADMAP ---------- */
+const ROADMAP = [
+  {n:'01', name:'Reorder Restaurants', date:'Oct 2026', verb:'Remembers', status:'testing',
+   moment:'Reorder, one shot.',
+   capability:'The assistant recognizes a previous restaurant order and rebuilds it, restaurant, items and quantities, ready to confirm in a single tap.',
+   value:'The most repeated behavior in the app stops being a manual journey: ordering again becomes one decision instead of eight taps.'},
+  {n:'02', name:'Restaurant Recommendations', date:'Nov 2026', verb:'Recommends', status:'next',
+   moment:'Rappi picks for you.',
+   capability:'The assistant interprets an open, unstructured craving and returns a short, personalized set of restaurants instead of a catalogue.',
+   value:'The blank-page problem disappears. The user expresses what they feel like and gets a curated shortlist that already knows their taste.'},
+  {n:'03', name:'Retail Assistant', date:'Dec 2026', verb:'Builds', status:'coming',
+   moment:'Tell Rappi what you need. We build the cart for you.',
+   capability:'The assistant translates a real-life job, a meal, an occasion, a plan, into a complete, correctly-sized grocery basket.',
+   value:'The user stops shopping item by item. They describe the outcome they want and skip list-making, searching and quantity math entirely.'},
+  {n:'04', name:'Proactive AI', date:'Feb 2027', verb:'Anticipates', status:'coming',
+   moment:'Your assistant is one step ahead.',
+   capability:'The assistant predicts what the user could want, from time, habits and context, and surfaces it before being asked.',
+   value:'The user no longer has to start the interaction. Recurring needs are handled before they become a task.'},
+  {n:'05', name:'AI Everywhere', date:'Feb 2027', verb:'Appears', status:'coming',
+   moment:'Your assistant, wherever you need it.',
+   capability:'The assistant expands into Restaurant Home and Home through Magic Box and additional contextual entry points across the app.',
+   value:'It stops being a destination the user must remember to open, and becomes available at the exact moment of intent.'},
+  {n:'06', name:'Retail Multicart', date:'Feb 2027', verb:'Optimizes', status:'coming',
+   moment:'The best basket, across stores, in one checkout.',
+   capability:'The assistant finds products and prices across different stores and assembles one multi-store basket with a single checkout.',
+   value:'The user gets the best available basket without shopping in several stores: savings without effort, one payment, one delivery.'},
+  {n:'07', name:'Conversational Search', date:'Feb 2027', verb:'Converses', status:'coming',
+   moment:'Search is now conversational.',
+   capability:'Search becomes native AI: it understands intent, constraints and context in natural language and generates the results.',
+   value:'No keyword guessing and no stacking filters. The user asks the way they would ask a person, and discovery adapts to the answer.'}
+];
+const RM_LABEL = {live:'LIVE', testing:'TESTING', next:'NEXT', coming:'COMING'};
+const rmTrack = document.getElementById('rmTrack');
+const rmDetail = document.getElementById('rmDetail');
+let rmActive = 0;
+
+ROADMAP.forEach((s,i)=>{
+  const col = document.createElement('div');
+  col.className='rm-col'; col.dataset.i=i;
+  col.innerHTML = `<div class="rm-date">${s.date}</div>
+    <div class="rm-dot"></div>
+    <button class="rm-card" type="button">
+      <div class="rm-st"><span class="s-n">STAGE ${s.n}</span><span class="s-b"><span class="rm-bd ${s.status}"></span>${RM_LABEL[s.status]}</span></div>
+      <div class="rm-name">${s.name}</div>
+    </button>`;
+  col.querySelector('.rm-card').addEventListener('click',()=>rmSelect(i));
+  rmTrack.appendChild(col);
+});
+
+function rmSelect(i){
+  rmActive = i;
+  const s = ROADMAP[i];
+  document.querySelectorAll('.rm-col').forEach((c,ci)=>{
+    const on = ci===i;
+    c.classList.toggle('on', on);
+    c.querySelector('.rm-card').classList.toggle('on', on);
+  });
+  rmDetail.innerHTML = `<div class="rm-anim">
+    <div class="rm-d-top"><span class="rm-verb">${s.verb}</span><span class="rm-d-stage">STAGE ${s.n} · ${s.date}</span></div>
+    <div class="rm-moment">${s.moment}</div>
+    <div class="rm-grid">
+      <div><div class="rm-k">What it does</div><div class="rm-tx">${s.capability}</div></div>
+      <div><div class="rm-k">Why it matters</div><div class="rm-tx">${s.value}</div></div>
+    </div>
+  </div>`;
+}
+rmSelect(0);
+</script>
+</body>
+</html>

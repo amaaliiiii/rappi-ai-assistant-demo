@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rappi AI Assistant — Evolution Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040302;
+  --surface:rgba(255,255,255,.045);
+  --surface-2:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.12);
+  --line-strong:rgba(255,255,255,.22);
+  --ink:#ffffff;
+  --ink-2:rgba(255,255,255,.74);
+  --ink-3:rgba(255,255,255,.54);
+  --ink-4:rgba(255,255,255,.38);
+  --accent:#FF6B46;
+  --accent-ink:#FF9270;
+  --accent-soft:rgba(255,107,70,.14);
+  --accent-line:rgba(255,107,70,.42);
+  --live:#3ED991;
+  --closing:#B9A8FF;
+  --nav-h:57px;
+  --font:'PP Object Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  position:relative;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-size:15px;
+  line-height:1.5;
+}
+body:before,body:after{content:'';position:fixed;inset:0;pointer-events:none}
+body:before{background:radial-gradient(120% 56% at 12% -12%, rgba(255,107,70,.34), rgba(255,107,70,0) 62%)}
+body:after{background:radial-gradient(85% 46% at 106% 108%, rgba(126,94,255,.24), rgba(126,94,255,0) 66%)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+@media(max-width:760px){.wrap{padding:0 20px}}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  height:var(--nav-h);
+  background:rgba(4,3,2,.62);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{height:100%;display:flex;align-items:center;gap:36px}
+.brand{display:flex;align-items:center;gap:9px;flex:none}
+.brand-mark{width:19px;height:19px;border-radius:6px;background:var(--surface-2);display:grid;place-items:center}
+.brand-mark svg{width:11px;height:11px;fill:var(--accent)}
+.brand-name{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.nav-meta{margin-left:auto;flex:none;font-size:12px;color:var(--ink-4);letter-spacing:.01em}
+@media(max-width:900px){.nav-meta{display:none}}
+
+/* ---------- HERO ---------- */
+.hero{padding:40px 0 34px;border-bottom:1px solid var(--line);text-align:center}
+.hero h1{
+  margin:0 auto;
+  font-size:30px;line-height:1.1;letter-spacing:-.03em;font-weight:700;
+  white-space:nowrap;
+}
+.hero-copy{margin:14px auto 0;font-size:14px;color:var(--ink-3);max-width:52ch;line-height:1.5}
+@media(max-width:760px){.hero h1{white-space:normal}}
+@media(max-width:600px){.hero h1{font-size:24px}}
+
+/* ---------- TIMELINE ---------- */
+.tl-sec{padding:34px 0 8px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:26px}
+.sec-title{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-4)}
+.tl-scroll{overflow-x:visible;padding-bottom:12px;margin:0 -4px;padding-left:4px;padding-right:4px}
+.tl-track{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;padding-top:44px}
+@media(max-width:900px){
+  .tl-scroll{overflow-x:auto;scrollbar-width:thin}
+  .tl-track{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(148px,1fr)}
+}
+.tl-rail{position:absolute;left:0;right:0;top:27px;height:1px;background:var(--line-strong)}
+.tl-rail-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);width:7.14%}
+.tl-item{
+  position:relative;background:none;border:0;padding:0;text-align:left;
+  font-family:inherit;cursor:pointer;display:flex;flex-direction:column;
+}
+.tl-date-top{
+  position:absolute;top:-42px;left:50%;transform:translateX(-50%);
+  font-size:11.5px;font-weight:500;color:var(--ink-3);white-space:nowrap;
+  font-variant-numeric:tabular-nums;transition:color .2s ease;
+}
+.tl-item[data-status="live"] .tl-date-top,.tl-item[data-status="closing"] .tl-date-top{color:var(--ink-2);font-weight:600}
+.tl-item.is-active .tl-date-top{color:var(--accent-ink);font-weight:600}
+.tl-dot{
+  position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+  width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:1.5px solid var(--line-strong);
+  transition:all .22s ease;
+}
+.tl-item[data-status="live"] .tl-dot{background:var(--accent);border-color:var(--accent)}
+.tl-item.is-active .tl-dot{
+  background:var(--accent);border-color:var(--accent);
+  outline:4px solid var(--accent-soft);
+}
+.tl-card{
+  display:flex;flex-direction:column;flex:1;
+  border:1px solid var(--line);border-radius:12px;padding:15px 14px 14px;
+  background:var(--surface);transition:border-color .2s ease,background .2s ease;
+}
+.tl-item:hover .tl-card{border-color:var(--line-strong);background:var(--surface-2)}
+.tl-item.is-active .tl-card{
+  border-color:var(--accent);background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent);
+}
+.tl-head{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;row-gap:4px}
+.tl-num{display:block;font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--ink-4)}
+.tl-item.is-active .tl-num{color:var(--accent-ink)}
+.tl-name{display:block;margin-top:11px;font-size:14.5px;font-weight:600;letter-spacing:-.017em;line-height:1.25;color:var(--ink)}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--ink-4);white-space:nowrap}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--line-strong);display:block;flex:none}
+.badge.live{color:var(--live)}
+.badge.live i{background:var(--live)}
+.badge.closing{color:var(--closing)}
+.badge.closing i{background:var(--closing)}
+.badge.next{color:var(--accent-ink)}
+.badge.next i{background:var(--accent)}
+
+/* ---------- DETAIL ---------- */
+.detail{
+  display:grid;grid-template-columns:1.48fr 1fr;gap:44px;
+  padding:44px 0 60px;
+}
+@media(max-width:980px){.detail{grid-template-columns:1fr;gap:36px}}
+.stage-anim{animation:rise .38s cubic-bezier(.22,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+.mock-panel{
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:40px 24px 30px;display:flex;flex-direction:column;align-items:center;
+}
+.mock-note{margin-top:22px;font-size:12.5px;color:var(--ink-3);text-align:center;max-width:44ch;line-height:1.5}
+.mock-note.is-empty{margin-top:0}
+.mock-note b{color:var(--ink-2);font-weight:600}
+
+/* phone */
+.phone{
+  width:326px;height:678px;flex:none;border-radius:46px;background:#0E0E10;
+  padding:9px;border:1px solid var(--line-strong);
+}
+.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.screen.dark{background:#0A0708}
+.screen.dark:before,.screen.dark:after{content:'';position:absolute;inset:0;pointer-events:none}
+.screen.dark:before{background:radial-gradient(115% 62% at 8% -6%, rgba(255,107,70,.42), rgba(255,107,70,0) 62%)}
+.screen.dark:after{background:radial-gradient(85% 42% at 104% 100%, rgba(126,94,255,.30), rgba(126,94,255,0) 66%)}
+.screen.light{
+  background:#fff;
+  --ink:#0B0B0C;--ink-2:#3E434E;--ink-3:#6C7280;--ink-4:#9AA0AB;
+  --surface:#FAFAF9;--surface-2:#F3F3F1;
+  --line:#E8E8E5;--line-strong:#D6D6D2;
+  --accent-ink:#D33F16;--accent-soft:#FFF3EF;--accent-line:#FFD5C6;
+}
+.screen.video-screen{background:#000}
+.mock-video{width:100%;height:100%;object-fit:cover;display:block}
+.sc{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;padding:16px 16px 14px}
+
+/* dark assistant chrome */
+.a-top{display:flex;align-items:center;justify-content:space-between;padding-top:14px}
+.circ{width:31px;height:31px;border-radius:50%;background:rgba(255,255,255,.09);display:grid;place-items:center}
+.circ svg{width:13px;height:13px;fill:none;stroke:rgba(255,255,255,.82);stroke-width:1.8;stroke-linecap:round}
+.utter{
+  margin-top:22px;text-align:right;color:#F6EFEC;font-size:21px;line-height:1.22;
+  font-weight:700;letter-spacing:-.025em;
+}
+.a-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;margin-top:20px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}
+.a-body::-webkit-scrollbar{display:none}
+.a-foot{flex:none;padding-top:10px}
+.a-line{color:rgba(255,255,255,.62);font-size:12.5px;line-height:1.45}
+.a-line b{color:#fff;font-weight:600}
+.gcard{background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:13px}
+.gcard.pick{border-color:rgba(255,107,70,.55);background:rgba(255,107,70,.10)}
+.row{display:flex;align-items:center;gap:10px}
+.thumb{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.14);flex:none}
+.thumb.sq{border-radius:9px}
+.t1{color:#fff;font-size:13px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.t2{color:rgba(255,255,255,.52);font-size:11px;margin-top:3px;line-height:1.35}
+.t3{color:#fff;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.mini{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#FFB09A}
+.chipset{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:10.5px;color:rgba(255,255,255,.78);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:4px 9px}
+.chip.on{background:rgba(255,107,70,.16);border-color:rgba(255,107,70,.45);color:#FFC0AC}
+.cta{
+  background:var(--accent);color:#fff;border-radius:999px;
+  padding:13px;text-align:center;font-size:13.5px;font-weight:600;letter-spacing:-.01em;
+}
+.cta.two{display:flex;justify-content:space-between;padding:13px 20px}
+.cta.two span:last-child{opacity:.85;font-weight:500}
+.cta-alt{margin-top:9px;text-align:center;font-size:12px;color:rgba(255,255,255,.5)}
+.a-bar{margin-top:12px;display:flex;align-items:center;gap:9px}
+.a-plus{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.10);display:grid;place-items:center;color:rgba(255,255,255,.8);font-size:17px;font-weight:300;flex:none}
+.a-input{flex:1;height:38px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);display:flex;align-items:center;padding:0 15px;color:rgba(255,255,255,.42);font-size:12.5px}
+.a-mic{width:38px;height:38px;border-radius:50%;background:#EF3D2E;display:grid;place-items:center;flex:none}
+.a-mic svg{width:14px;height:14px;fill:#fff}
+.homebar{width:112px;height:4px;border-radius:99px;background:rgba(255,255,255,.28);margin:11px auto 0}
+.homebar.d{background:rgba(0,0,0,.20)}
+
+/* light home mock */
+.h-top{display:flex;align-items:center;justify-content:space-between;padding-top:16px}
+.h-addr{font-size:12px;color:var(--ink-3)}
+.h-addr b{display:block;color:var(--ink);font-size:13.5px;font-weight:600;letter-spacing:-.01em;margin-top:2px}
+.h-av{width:29px;height:29px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line)}
+.h-search{margin-top:14px;height:40px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;padding:0 13px;gap:9px;font-size:12.5px;color:var(--ink-4)}
+.h-search svg{width:13px;height:13px;fill:var(--accent);flex:none}
+.magic{
+  margin-top:12px;border:1.5px solid var(--accent);background:var(--accent-soft);
+  border-radius:16px;padding:14px;position:relative;
+}
+.magic-lbl{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink)}
+.magic-lbl svg{width:11px;height:11px;fill:var(--accent)}
+.magic-q{margin-top:9px;font-size:14.5px;font-weight:600;letter-spacing:-.02em;line-height:1.3;color:var(--ink)}
+.magic-sub{margin-top:5px;font-size:11.5px;color:var(--ink-3)}
+.verticals{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.vert{text-align:center}
+.vert i{display:block;height:42px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.vert span{display:block;margin-top:6px;font-size:9.5px;color:var(--ink-3)}
+.h-sec{margin-top:18px;display:flex;align-items:center;justify-content:space-between}
+.h-sec h4{font-size:13.5px;font-weight:700;letter-spacing:-.02em}
+.h-ai-btn{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:999px;padding:4px 9px}
+.h-ai-btn svg{width:10px;height:10px;fill:var(--accent)}
+.rests{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.rest i{display:block;height:62px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line)}
+.rest b{display:block;margin-top:7px;font-size:11.5px;font-weight:600;letter-spacing:-.01em}
+.rest span{display:block;margin-top:2px;font-size:10px;color:var(--ink-4)}
+.h-float{
+  margin-top:auto;height:44px;border-radius:999px;background:var(--ink);
+  display:flex;align-items:center;justify-content:space-between;padding:0 6px 0 17px;
+}
+.h-float span{color:rgba(255,255,255,.6);font-size:12.5px}
+.h-float .a-mic{width:32px;height:32px}
+.pin{
+  position:absolute;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:10px;font-weight:700;display:grid;place-items:center;z-index:5;
+  border:2px solid #fff;
+}
+
+/* store groups (multicart) */
+.store-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.store-n{display:flex;align-items:center;gap:7px;color:#fff;font-size:12px;font-weight:600}
+.store-n i{width:16px;height:16px;border-radius:5px;background:rgba(255,255,255,.18);display:block}
+.li{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,.07)}
+.li:first-of-type{border-top:0}
+.li-n{color:rgba(255,255,255,.78);font-size:11.5px}
+.li-p{color:#fff;font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.save{
+  border-radius:12px;background:rgba(255,107,70,.12);border:1px solid rgba(255,107,70,.35);
+  padding:9px 12px;color:#FFC7B6;font-size:11.5px;line-height:1.4;
+}
+.save b{color:#fff;font-weight:700}
+
+/* basket list */
+.blist{display:flex;flex-direction:column}
+.bitem{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.07)}
+.bitem:first-child{border-top:0}
+.bq{width:22px;height:22px;border-radius:7px;background:rgba(255,107,70,.18);color:#FFB09A;font-size:10px;font-weight:700;display:grid;place-items:center;flex:none}
+.bn{flex:1;color:rgba(255,255,255,.82);font-size:11.5px}
+.bp{color:rgba(255,255,255,.5);font-size:11px;font-variant-numeric:tabular-nums}
+
+/* multicart (stage 06) */
+#mc-root{flex:1;min-height:0;display:flex;flex-direction:column}
+#mc-body.mc-center{justify-content:center}
+.store-h{cursor:pointer}
+.mc-eta{color:rgba(255,255,255,.4);font-weight:500;margin-left:6px;font-size:10px}
+.mc-store-r{display:flex;align-items:center;gap:8px;flex:none}
+.mc-chev{width:13px;text-align:center;color:rgba(255,255,255,.4);font-size:13px;line-height:1;flex:none}
+.gcard.mc-top{border-color:rgba(255,107,70,.5);background:rgba(255,107,70,.09)}
+.mc-top-tag{color:var(--accent-ink)}
+.mc-items{margin-top:9px}
+.mc-item .li{padding:5px 0}
+.mc-ctrls{display:flex;align-items:center;gap:10px;padding-bottom:8px}
+.mc-stepper{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border-radius:999px;padding:3px 4px}
+.mc-stepbtn{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.13);color:#fff;font-size:11px;line-height:1;display:grid;place-items:center;border:0;font-family:inherit;cursor:pointer;padding:0}
+.mc-stepbtn:disabled{opacity:.3;cursor:default}
+.mc-qty{font-size:10.5px;color:#fff;min-width:10px;text-align:center;font-variant-numeric:tabular-nums}
+.mc-tbtn{font-size:10px;font-weight:600;color:var(--accent-ink);background:none;border:0;font-family:inherit;cursor:pointer;padding:0}
+.mc-tbtn.mc-x{color:rgba(255,255,255,.36)}
+.mc-empty{color:rgba(255,255,255,.4);font-size:10.5px;padding:6px 0 2px}
+.mc-alts{margin:0 0 9px;padding:8px 9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:10px;display:flex;flex-direction:column;gap:6px}
+.mc-alts-l{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.mc-alt{display:flex;align-items:center;justify-content:space-between;gap:8px;background:none;border:0;padding:0;font-family:inherit;color:inherit;cursor:pointer;text-align:left;width:100%}
+.mc-alt-n{color:rgba(255,255,255,.85);font-size:10.5px}
+.mc-alt-p{color:#FFC0AC;font-size:10px;font-weight:600;white-space:nowrap;flex:none}
+.mc-req{color:#F6EFEC;font-size:13.5px;line-height:1.32;font-weight:700;letter-spacing:-.02em;text-align:right}
+.mc-groceries{display:flex;gap:6px;overflow-x:auto;padding-bottom:1px;scrollbar-width:none;flex-shrink:0}
+.mc-groceries::-webkit-scrollbar{display:none}
+.mc-groceries .chip{flex:none}
+.mc-status{font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.4}
+.mc-sub{color:rgba(255,255,255,.52);font-size:11px;line-height:1.4}
+.mc-moment .mini{display:flex;align-items:center;gap:4px}
+.mc-moment .mini svg{width:9px;height:9px;fill:var(--accent)}
+.mc-moment-t{color:rgba(255,255,255,.82);font-size:11.5px;font-weight:600;margin-top:3px;line-height:1.35}
+.mc-moment-s{color:rgba(255,255,255,.4);font-size:10px;margin-top:2px;line-height:1.3}
+.mc-foot-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.mc-foot-h span:first-child{font-size:11px;color:rgba(255,255,255,.62);font-weight:500}
+.mc-breakdown{margin-bottom:8px}
+.mc-conf{text-align:center;padding-top:6px}
+.mc-conf-badge{width:36px;height:36px;border-radius:50%;background:rgba(255,107,70,.16);display:grid;place-items:center;margin:0 auto}
+.mc-conf-badge svg{width:15px;height:15px;fill:var(--accent)}
+.mc-conf-t{margin-top:12px;color:#fff;font-size:15px;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.mc-conf-s{margin-top:5px;color:rgba(255,255,255,.5);font-size:11.5px;line-height:1.4}
+
+/* search mock */
+.s-field{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 13px;color:#fff;font-size:13px;line-height:1.35;font-weight:500}
+.s-read{margin-top:11px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+
+/* stage 02 — stacked mocks (wow-moment card + real-flow carousel) */
+.mock-panel .phone + .phone{margin-top:28px}
+.rf-screen{background:#0A0708}
+.rf-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0A0708}
+.rf-img{width:100%;height:100%;object-fit:contain;display:block}
+.rf-img.cover{object-fit:cover}
+.rf-html-step{position:absolute;inset:0;display:none;flex-direction:column;background:#0A0708;overflow:hidden}
+.rf-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;
+  background:rgba(10,7,8,.55);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:16px;line-height:1;
+  display:grid;place-items:center;cursor:pointer;font-family:inherit;z-index:3;transition:opacity .15s ease;
+}
+.rf-arrow-l{left:10px}
+.rf-arrow-r{right:10px}
+.rf-arrow:disabled{opacity:.25;cursor:default}
+.rf-bar{position:absolute;left:0;right:0;bottom:14px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:7px}
+.rf-dots{display:flex;align-items:center;gap:5px}
+.rf-dot{width:5px;height:5px;border-radius:999px;background:rgba(255,255,255,.32);transition:all .18s ease}
+.rf-dot.on{width:14px;background:var(--accent)}
+.rf-count{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;background:rgba(10,7,8,.5);border:1px solid rgba(255,255,255,.12);padding:2px 9px;border-radius:999px}
+
+/* ---------- RIGHT PANEL ---------- */
+.side{display:flex;flex-direction:column}
+.side-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.side h2{margin-top:11px;font-size:28px;line-height:1.1;letter-spacing:-.032em;font-weight:700}
+.side-meta{margin-top:14px;display:flex;align-items:center;gap:14px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.side-date{font-size:13px;color:var(--ink-2);font-weight:500;font-variant-numeric:tabular-nums}
+.side-date span{color:var(--ink-4);font-weight:400}
+.block{padding:20px 0;border-bottom:1px solid var(--line)}
+.block-l{font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-4)}
+.block-t{margin-top:9px;font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+.gtm-table{width:100%;border-collapse:collapse;margin-top:12px}
+.gtm-table td{padding:9px 0;font-size:13.5px;line-height:1.45;color:var(--ink-2);vertical-align:top;border-bottom:1px solid var(--line)}
+.gtm-table td.gtm-k{width:126px;color:var(--ink-4);font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding-right:14px}
+.gtm-table tr:last-child td{border-bottom:0}
+.gtm-table tr.gtm-sec td{padding:16px 0 6px;font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);border-bottom:0}
+.gtm-table tr.gtm-sec:first-child td{padding-top:2px}
+.scope-note{margin-top:9px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.scope-list{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:14px}
+.scope-item{display:flex;align-items:flex-start;gap:12px}
+.scope-n{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent-ink);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;display:grid;place-items:center}
+.scope-t{font-size:13.5px;line-height:1.55;color:var(--ink-2)}
+.strat-grid{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.strat-item{padding:12px 14px;border-radius:12px;background:var(--accent-soft);border:1px solid var(--accent-line)}
+.strat-t{font-size:12.5px;font-weight:700;letter-spacing:-.012em;color:var(--ink)}
+.strat-d{margin-top:4px;font-size:11.5px;line-height:1.42;color:var(--ink-3)}
+@media(max-width:520px){.strat-grid{grid-template-columns:1fr}}
+.gtm-idea{margin-top:20px;padding:15px 16px;border:1px dashed var(--line-strong);border-radius:14px;background:rgba(255,255,255,.03)}
+.gtm-idea-l{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.gtm-idea-item+.gtm-idea-item{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.gtm-idea-t{margin-top:8px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.wow-card{cursor:pointer;transition:border-color .2s ease}
+.wow-card:hover .magic-pill{background:var(--accent);color:#fff;border-color:var(--accent)}
+.magic-slot{width:100%;height:126px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg, var(--accent-soft), rgba(126,94,255,.16));border:1px dashed var(--accent-line);transition:opacity .2s ease}
+.magic-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:999px;background:rgba(0,0,0,.32);border:1px solid var(--accent-line);font-size:13.5px;font-weight:700;color:var(--accent-ink);letter-spacing:.01em;font-family:inherit;cursor:pointer}
+.magic-hint{font-size:11px;color:var(--ink-4)}
+.wow-result{display:none}
+.wow-card.revealed{cursor:default}
+.wow-card.revealed .magic-slot{display:none}
+.wow-card.revealed .wow-result{display:block;animation:rise .35s ease}
+.wow-disclaimer{margin-top:12px;font-size:11px;line-height:1.5;color:var(--ink-4);text-align:center}
+.gtm-idea-ref{margin-top:14px;display:flex;align-items:flex-start;gap:16px}
+.gtm-idea-ref img{width:150px;height:auto;border-radius:14px;border:1px solid var(--line-strong);display:block;flex:none}
+.gtm-idea-ref span{font-size:12px;color:var(--ink-4);line-height:1.5;padding-top:4px}
+.gtm-example{margin-top:20px;display:flex;align-items:flex-start;gap:18px}
+.gtm-example-r{flex:1;padding-top:6px;min-width:0}
+.gtm-example-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.gtm-example-t{margin-top:8px;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+.vb-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:12px;font-weight:600;color:var(--accent-ink);text-decoration:none;border-bottom:1px solid var(--accent-line);padding-bottom:2px}
+.vb-link:hover{color:var(--accent);border-color:var(--accent)}
+.vb-link span{display:inline-block;transition:transform .15s ease}
+.vb-link:hover span{transform:translateX(2px)}
+
+/* onboarding video mock (Figma: tooltip / 4744:100126) */
+.phone.onboard{width:230px;height:498px;flex:none;border-radius:32px;padding:6px}
+.phone.onboard .screen{border-radius:26px}
+.vb-app{position:absolute;inset:0;background:linear-gradient(165deg,#2b2b2e,#131315)}
+.vb-addr{
+  position:absolute;top:17px;left:13px;right:13px;height:21px;z-index:1;
+  background:rgba(255,255,255,.14);border-radius:999px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 10px;
+  font-size:8px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;
+}
+.vb-addr span{overflow:hidden;text-overflow:ellipsis}
+.vb-addr i{font-style:normal;opacity:.7;font-size:9px;margin-left:6px}
+.vb-scrim{position:absolute;inset:0;background:rgba(0,0,0,.74);z-index:2}
+.vb-close{
+  position:absolute;top:13px;right:13px;width:19px;height:19px;border-radius:50%;
+  background:#fff;color:#111;display:flex;align-items:center;justify-content:center;
+  font-size:12px;line-height:1;z-index:5;
+}
+.vb-card{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:58px;
+  width:calc(100% - 28px);height:320px;border-radius:19px;overflow:hidden;
+  background:#000;z-index:3;
+}
+.vb-video{width:100%;height:100%;object-fit:cover;display:block}
+.vb-fade{position:absolute;left:0;right:0;bottom:0;height:64px;background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.85))}
+.vb-progress{position:absolute;left:13px;right:13px;bottom:13px;display:flex;align-items:center;gap:8px;z-index:2}
+.vb-track{flex:1;height:3px;border-radius:999px;background:rgba(255,255,255,.35);overflow:hidden}
+.vb-fill{height:100%;width:0%;background:#fff;border-radius:999px}
+.vb-time{font-size:7.5px;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vb-skip{
+  position:absolute;left:13px;bottom:18px;z-index:4;
+  background:rgba(20,20,22,.55);border:1px solid rgba(255,255,255,.4);color:#fff;
+  font-size:8.5px;font-weight:600;border-radius:999px;padding:5px 10px;
+  display:flex;align-items:center;gap:3px;font-family:inherit;cursor:default;
+}
+.vb-skip span{font-size:10px}
+.vb-mic{
+  position:absolute;right:13px;bottom:12px;width:32px;height:32px;border-radius:50%;
+  background:#EF3D2E;display:flex;align-items:center;justify-content:center;z-index:4;
+}
+.vb-mic svg{width:13px;height:13px;fill:#fff}
+
+/* main-mock video-onboarding chrome (Stage 01, larger 326px-frame scale ~0.869) — mirrors .vb-* 1:1 at bigger size, kept fully separate to avoid affecting the small GTM example above */
+.vbm-app{position:absolute;inset:0;background:linear-gradient(165deg,#2b2b2e,#131315)}
+.vbm-addr{
+  position:absolute;top:24px;left:18px;right:18px;height:30px;z-index:1;
+  background:rgba(255,255,255,.14);border-radius:999px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 14px;
+  font-size:11px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;
+}
+.vbm-addr span{overflow:hidden;text-overflow:ellipsis}
+.vbm-addr i{font-style:normal;opacity:.7;font-size:12px;margin-left:8px}
+.vbm-scrim{position:absolute;inset:0;background:rgba(0,0,0,.74);z-index:2}
+.vbm-close{
+  position:absolute;top:18px;right:18px;width:27px;height:27px;border-radius:50%;
+  background:#fff;color:#111;display:flex;align-items:center;justify-content:center;
+  font-size:17px;line-height:1;z-index:5;
+}
+.vbm-card{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:82px;
+  width:calc(100% - 40px);height:454px;border-radius:27px;overflow:hidden;
+  background:#000;z-index:3;
+}
+.vbm-video{width:100%;height:100%;object-fit:cover;display:block}
+.vbm-fade{position:absolute;left:0;right:0;bottom:0;height:91px;background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.85))}
+.vbm-progress{position:absolute;left:18px;right:18px;bottom:18px;display:flex;align-items:center;gap:11px;z-index:2}
+.vbm-track{flex:1;height:4px;border-radius:999px;background:rgba(255,255,255,.35);overflow:hidden}
+.vbm-fill{height:100%;width:0%;background:#fff;border-radius:999px}
+.vbm-time{font-size:10.5px;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.vbm-skip{
+  position:absolute;left:18px;bottom:26px;z-index:4;
+  background:rgba(20,20,22,.55);border:1px solid rgba(255,255,255,.4);color:#fff;
+  font-size:11px;font-weight:600;border-radius:999px;padding:7px 14px;
+  display:flex;align-items:center;gap:4px;font-family:inherit;cursor:default;
+}
+.vbm-skip span{font-size:14px}
+.vbm-mic{
+  position:absolute;right:18px;bottom:17px;width:45px;height:45px;border-radius:50%;
+  background:#EF3D2E;display:flex;align-items:center;justify-content:center;z-index:4;
+}
+.vbm-mic svg{width:18px;height:18px;fill:#fff}
+@media(max-width:520px){
+  .gtm-example{flex-direction:column;align-items:center}
+  .gtm-example-r{padding-top:0;text-align:center}
+}
+.moment{
+  margin-top:24px;background:var(--accent-soft);border:1px solid var(--accent-line);
+  border-radius:16px;padding:22px;
+}
+.moment-l{display:flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-ink)}
+.moment-l svg{width:12px;height:12px;fill:var(--accent)}
+.moment-q{
+  margin-top:14px;font-size:23px;line-height:1.24;letter-spacing:-.03em;font-weight:600;color:var(--ink);
+}
+.stage-note-line{margin-top:16px;font-size:12px;line-height:1.55;color:var(--ink-3)}
+footer{padding:26px 0 40px;font-size:11.5px;color:var(--ink-4);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 1.6l2 6.4 6.4 2-6.4 2-2 6.4-2-6.4-6.4-2 6.4-2z"/></svg></div>
+      <div class="brand-name">AI Assistant</div>
+    </div>
+    <div class="nav-meta">Internal product strategy · Aug 2026</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>AI Assistant Evolution Roadmap</h1>
+    <p class="hero-copy">Show how AI Assistant progressively becomes more intelligent, proactive and deeply integrated across the Rappi experience.</p>
+  </div>
+</header>
+
+<section class="tl-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-title">Roadmap</div>
+    </div>
+    <div class="tl-scroll">
+      <div class="tl-track" id="track">
+        <div class="tl-rail"><div class="tl-rail-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap detail">
+  <div class="mock-panel">
+    <div id="mock"></div>
+    <p class="mock-note" id="mockNote"></p>
+  </div>
+  <aside class="side" id="side"></aside>
+</section>
+
+<div class="wrap"><footer>
+  <span>Rappi AI Assistant · Evolution Roadmap</span>
+  <span>Tab 1 of 2 · GTM Plan coming next</span>
+</footer></div>
+
+<script>
+const ICON = {
+  close:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  vol:'<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM17 9.5a4 4 0 010 5"/></svg>',
+  mic:'<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0h-1.6a4.4 4.4 0 01-8.8 0zM11.2 18.4h1.6V21h-1.6z"/></svg>',
+  spark:'<svg viewBox="0 0 24 24"><path d="M12 1.6l2 6.4 6.4 2-6.4 2-2 6.4-2-6.4-6.4-2 6.4-2z"/></svg>',
+  search:'<svg viewBox="0 0 24 24"><path d="M11 3a8 8 0 105.3 14L21 21.7 22.4 20l-4.7-4.7A8 8 0 0011 3zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg>'
+};
+
+const inputBar = (ph='Pídeme lo que quieras') => `
+  <div class="a-bar">
+    <div class="a-plus">+</div>
+    <div class="a-input">${ph}</div>
+    <div class="a-mic">${ICON.mic}</div>
+  </div>
+  <div class="homebar"></div>`;
+
+const topBar = () => `<div class="a-top"><div class="circ">${ICON.close}</div><div class="circ">${ICON.vol}</div></div>`;
+
+const dark = inner => `<div class="phone"><div class="screen dark"><div class="sc">${inner}</div></div></div>`;
+const light = inner => `<div class="phone"><div class="screen light"><div class="sc">${inner}</div></div></div>`;
+const video = src => `<div class="phone"><div class="screen video-screen"><video class="mock-video" src="${src}" autoplay muted loop playsinline></video></div></div>`;
+
+function vbTick(v){
+  const card = v.closest('.vb-card');
+  if(!card) return;
+  const fill = card.querySelector('.vb-fill');
+  const time = card.querySelector('.vb-time');
+  const fmt = s => { s = Math.floor(s || 0); const m = Math.floor(s/60); const ss = s%60; return m+':'+(ss<10?'0':'')+ss; };
+  if(v.duration && fill) fill.style.width = (v.currentTime/v.duration*100)+'%';
+  if(time) time.textContent = fmt(v.currentTime)+' / '+fmt(v.duration);
+}
+
+const MOCKS = {
+  1: () => video('assets/reorder-oneshot.mp4'),
+
+  2: () => dark(`
+    ${topBar()}
+    <div class="a-body" style="margin-top:24px">
+      <div class="chipset"><div class="chip on">Sorpréndeme ✨</div></div>
+      <div class="utter" style="text-align:left;margin-top:14px">Tu pick de esta noche</div>
+      <div class="gcard pick wow-card" id="wowCard" onclick="this.classList.add('revealed')">
+        <div class="magic-slot">
+          <button class="magic-pill" type="button">✨ Magic</button>
+          <div class="magic-hint">Toca para ver tu pick</div>
+        </div>
+        <div class="wow-result">
+          <div class="mini" style="margin-top:12px">92% match</div>
+          <div class="t1" style="margin-top:4px;font-size:15px">Ramen Tonkotsu · Wakame House</div>
+          <div class="t2" style="margin-top:6px">Pides ramen casi todos los jueves de lluvia — y hoy también llueve.</div>
+        </div>
+      </div>
+      <div class="wow-disclaimer">Innovación está trabajando en esto — pantalla conceptual.</div>
+    </div>
+    <div class="a-foot">
+      <div class="cta">Pedir</div>
+      <div class="cta-alt">Ver más opciones</div>
+    </div>
+    ${inputBar()}`) + `
+    <div class="phone">
+      <div class="screen rf-screen" data-flow="rec">
+        <div class="rf-stage"><img class="rf-img" src="assets/rec-flow-1.png" alt="Flujo real de recomendaciones — paso 1 de 6"></div>
+        <button class="rf-arrow rf-arrow-l" data-rf="prev" aria-label="Paso anterior">‹</button>
+        <button class="rf-arrow rf-arrow-r" data-rf="next" aria-label="Paso siguiente">›</button>
+        <div class="rf-bar">
+          <div class="rf-dots"></div>
+          <div class="rf-count">1 / 6</div>
+        </div>
+      </div>
+    </div>`,
+
+  3: () => `
+    <div class="phone">
+      <div class="screen rf-screen" data-flow="retail1">
+        <div class="rf-stage"><img class="rf-img cover" src="assets/retail-mock1-1.png" alt="Retail Assistant — mock 1, paso 1 de 2"></div>
+        <button class="rf-arrow rf-arrow-l" data-rf="prev" aria-label="Paso anterior">‹</button>
+        <button class="rf-arrow rf-arrow-r" data-rf="next" aria-label="Paso siguiente">›</button>
+        <div class="rf-bar">
+          <div class="rf-dots"></div>
+          <div class="rf-count">1 / 2</div>
+        </div>
+      </div>
+    </div>` + `
+    <div class="phone">
+      <div class="screen rf-screen" data-flow="retail2">
+        <div class="rf-stage"><img class="rf-img cover" src="assets/retail-mock2-1.png" alt="Retail Assistant — mock 2, paso 1 de 3"></div>
+        <button class="rf-arrow rf-arrow-l" data-rf="prev" aria-label="Paso anterior">‹</button>
+        <button class="rf-arrow rf-arrow-r" data-rf="next" aria-label="Paso siguiente">›</button>
+        <div class="rf-bar">
+          <div class="rf-dots"></div>
+          <div class="rf-count">1 / 3</div>
+        </div>
+      </div>
+    </div>` + `
+    <div style="text-align:center">
+      <a class="vb-link" href="https://www.figma.com/design/UHEUZq0ybE3H0LVsBKEgb5/Adri-in-Rappi?node-id=6333-58755&m=dev" target="_blank" rel="noopener">View in Figma <span>→</span></a>
+    </div>`,
+
+  4: () => dark(`
+    ${topBar()}
+    <div class="a-body" style="margin-top:26px">
+      <div class="chipset"><div class="chip on">Sugerencia proactiva</div></div>
+      <div class="utter" style="text-align:left;margin-top:14px">¿Repetimos tu almuerzo favorito?</div>
+      <div class="a-line" style="margin-top:14px">Son las <b>12:40</b> y los viernes sueles pedir Wok. Hoy llega en <b>26 min</b>.</div>
+      <div class="gcard" style="margin-top:6px">
+        <div class="row">
+          <div class="thumb"></div>
+          <div style="flex:1">
+            <div class="t1">Wok · Parque 93</div>
+            <div class="t2">Pad Thai de pollo + Limonada</div>
+          </div>
+          <div class="t3">$41.200</div>
+        </div>
+      </div>
+      <div class="a-line">También noté que <b>se te está acabando el café</b> que compras cada 3 semanas.</div>
+      <div class="gcard">
+        <div class="row">
+          <div class="thumb sq"></div>
+          <div style="flex:1">
+            <div class="t1">Café Quindío 500g</div>
+            <div class="t2">Comprado hace 21 días · Turbo, 10 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="a-foot">
+      <div class="cta">Sí, pídelo</div>
+      <div class="cta-alt">Hoy no</div>
+    </div>
+    ${inputBar()}`),
+
+  5: () => `
+    <div class="phone">
+      <div class="screen rf-screen" data-flow="search">
+        <div class="rf-stage"><img class="rf-img cover" src="assets/ai-everywhere-search-1.png" alt="Búsqueda conversacional con AI Assistant — paso 1 de 2"></div>
+        <button class="rf-arrow rf-arrow-l" data-rf="prev" aria-label="Paso anterior">‹</button>
+        <button class="rf-arrow rf-arrow-r" data-rf="next" aria-label="Paso siguiente">›</button>
+        <div class="rf-bar">
+          <div class="rf-dots"></div>
+          <div class="rf-count">1 / 2</div>
+        </div>
+      </div>
+    </div>` + `
+    <div class="phone">
+      <div class="screen rf-screen" data-flow="magicbox">
+        <div class="rf-stage">
+          <img class="rf-img" src="assets/ai-everywhere-magicbox-1.png" alt="Magic Box en Rappi Home — paso 1 de 2">
+          <div class="rf-html-step"></div>
+        </div>
+        <button class="rf-arrow rf-arrow-l" data-rf="prev" aria-label="Paso anterior">‹</button>
+        <button class="rf-arrow rf-arrow-r" data-rf="next" aria-label="Paso siguiente">›</button>
+        <div class="rf-bar">
+          <div class="rf-dots"></div>
+          <div class="rf-count">1 / 2</div>
+        </div>
+      </div>
+    </div>`,
+
+  6: () => dark(`
+    ${topBar()}
+    <div id="mc-root">
+      <div class="a-body" id="mc-body"></div>
+      <div class="a-foot" id="mc-foot"></div>
+    </div>`),
+
+  7: () => dark(`
+    ${topBar()}
+    <div class="a-body" style="margin-top:22px">
+      <div class="s-field">Quiero algo saludable, alto en proteína y que llegue rápido</div>
+      <div class="s-read">Entendí</div>
+      <div class="chipset"><div class="chip on">Saludable</div><div class="chip on">Alto en proteína</div><div class="chip on">Menos de 30 min</div></div>
+      <div class="a-line" style="margin-top:4px"><b>14 resultados</b> en restaurantes y market</div>
+      <div class="gcard pick">
+        <div class="row">
+          <div class="thumb"></div>
+          <div style="flex:1">
+            <div class="t1">Poke House · Bowl de atún</div>
+            <div class="t2">42g proteína · 520 kcal · 22 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="gcard">
+        <div class="row">
+          <div class="thumb"></div>
+          <div style="flex:1">
+            <div class="t1">Verde Rooftop · Pollo grillado</div>
+            <div class="t2">38g proteína · 470 kcal · 27 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="gcard">
+        <div class="row">
+          <div class="thumb sq"></div>
+          <div style="flex:1">
+            <div class="t1">Turbo · Yogurt griego + granola</div>
+            <div class="t2">22g proteína · 10 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    ${inputBar('Refina tu búsqueda')}`)
+};
+
+const fmtCOP = n => Math.round(n).toLocaleString('es-CO');
+
+/* Stage 06 — multi-store cart mock. Self-contained state + render module,
+   re-initialized every time select(6) inserts fresh markup into #mock. */
+const MultiCart = (() => {
+  const GROCERIES = ['Leche','Huevos','Aguacate','Salmón','Pasta','Tomates','Yogurt griego','Café','Papel higiénico','Detergente'];
+
+  const PRIORITY = {
+    precio:{
+      adjust:{turbo:-800, exito:-1400, makro:-300, pesca:0}, top:'makro',
+      badges:{turbo:'Mejor precio + entrega rápida', exito:'Mejor precio disponible', makro:'Mejor precio por unidad', pesca:'Buena relación calidad/precio'}
+    },
+    calidad:{
+      adjust:{turbo:0, exito:600, makro:0, pesca:0}, top:'pesca',
+      badges:{turbo:'Buena relación precio/calidad', exito:'Mejor relación precio/calidad', makro:'Precio por unidad', pesca:'Mejor calidad garantizada'}
+    },
+    rapido:{
+      adjust:{turbo:0, exito:400, makro:400, pesca:0}, top:'turbo',
+      badges:{turbo:'Entrega en 10–15 min', exito:'Mejor relación precio/calidad', makro:'Mejor precio por unidad', pesca:'Entrega prioritaria'}
+    }
+  };
+
+  function freshStores(){
+    return {
+      turbo:{name:'Turbo', eta:'10–15 min', badge:'Mejor precio + entrega rápida', items:[
+        {name:'Leche Alquería 1L', base:6900, price:6900, qty:1, alt:[{name:'Leche Colanta 1L',price:6300,from:'Éxito'},{name:'Leche deslactosada Alpina 1L',price:7800,from:'Makro'}]},
+        {name:'Aguacate Hass x4', base:9900, price:9900, qty:1, alt:[{name:'Aguacate criollo x6',price:8200,from:'Éxito'},{name:'Aguacate Hass premium x3',price:11500,from:'Pescadería'}]},
+        {name:'Yogurt griego 900g', base:14900, price:14900, qty:1, alt:[{name:'Yogurt griego Alquería 480g',price:9900,from:'Éxito'},{name:'Yogurt griego light 900g',price:13400,from:'Makro'}]},
+        {name:'Papel higiénico x4', base:17200, price:17200, qty:1, alt:[{name:'Papel higiénico x12',price:29900,from:'Makro'},{name:'Papel higiénico premium x4',price:19800,from:'Éxito'}]}
+      ]},
+      exito:{name:'Éxito', eta:'45–60 min', badge:'Mejor relación precio/calidad', items:[
+        {name:'Huevos AA x30', base:22900, price:22900, qty:1, alt:[{name:'Huevos AA x20',price:16200,from:'Turbo'},{name:'Huevos orgánicos x12',price:14900,from:'Makro'}]},
+        {name:'Pasta Barilla 500g', base:8500, price:8500, qty:1, alt:[{name:'Pasta Doria 500g',price:5200,from:'Makro'},{name:'Pasta integral Barilla 500g',price:9600,from:'Turbo'}]},
+        {name:'Café Juan Valdez 500g', base:24900, price:24900, qty:1, alt:[{name:'Café Sello Rojo 500g',price:14200,from:'Makro'},{name:'Café Juan Valdez 250g',price:13900,from:'Turbo'}]},
+        {name:'Detergente líquido 3L', base:16100, price:16100, qty:1, alt:[{name:'Detergente en polvo 3kg',price:18900,from:'Makro'},{name:'Detergente líquido 1L',price:8200,from:'Turbo'}]}
+      ]},
+      makro:{name:'Makro', eta:'60–90 min', badge:'Mejor precio por unidad', items:[
+        {name:'Pack tomates chonto x3kg', base:31700, price:31700, qty:1, alt:[{name:'Tomates x1kg',price:12400,from:'Turbo'},{name:'Tomates orgánicos x2kg',price:26900,from:'Éxito'}]}
+      ]},
+      pesca:{name:'Pescadería del Barrio', eta:'35–50 min', badge:'Mejor calidad', items:[
+        {name:'Salmón fresco 500g', base:42000, price:42000, qty:1, alt:[{name:'Salmón fresco 500g',price:46800,from:'Éxito'},{name:'Trucha fresca 500g',price:29900,from:'Pescadería'}]}
+      ]}
+    };
+  }
+
+  function freshState(){
+    return { priority:null, expanded:{turbo:true,exito:false,makro:false,pesca:false}, swap:null, foldOpen:false, confirmed:false, stores:freshStores() };
+  }
+
+  let state, root, body, foot;
+
+  const subtotal = k => state.stores[k].items.reduce((s,it)=>s+it.price*it.qty,0);
+  const total = () => Object.keys(state.stores).reduce((s,k)=>s+subtotal(k),0);
+  const totalItems = () => Object.values(state.stores).reduce((s,st)=>s+st.items.length,0);
+  const canastas = () => Object.values(state.stores).filter(st=>st.items.length>0).length;
+  const badgeFor = k => state.priority ? PRIORITY[state.priority].badges[k] : state.stores[k].badge;
+
+  function itemRow(k, it, i){
+    const swapping = state.swap && state.swap.store===k && state.swap.idx===i;
+    return `
+      <div class="mc-item">
+        <div class="li">
+          <div class="li-n">${it.name}</div>
+          <div class="li-p">$${fmtCOP(it.price*it.qty)}</div>
+        </div>
+        <div class="mc-ctrls">
+          <div class="mc-stepper">
+            <button class="mc-stepbtn" data-action="dec" data-store="${k}" data-idx="${i}" ${it.qty<=1?'disabled':''}>−</button>
+            <span class="mc-qty">${it.qty}</span>
+            <button class="mc-stepbtn" data-action="inc" data-store="${k}" data-idx="${i}">+</button>
+          </div>
+          <button class="mc-tbtn" data-action="swap" data-store="${k}" data-idx="${i}">Cambiar</button>
+          <button class="mc-tbtn mc-x" data-action="remove" data-store="${k}" data-idx="${i}">Quitar</button>
+        </div>
+        ${swapping ? `<div class="mc-alts">
+          <div class="mc-alts-l">Alternativas</div>
+          ${it.alt.map((a,ai)=>`<button class="mc-alt" data-action="pick-alt" data-store="${k}" data-idx="${i}" data-alt="${ai}">
+            <span class="mc-alt-n">${a.name}</span><span class="mc-alt-p">$${fmtCOP(a.price)} · ${a.from}</span>
+          </button>`).join('')}
+        </div>` : ''}
+      </div>`;
+  }
+
+  function storeCard(k){
+    const st = state.stores[k];
+    const exp = state.expanded[k];
+    const top = !!state.priority && PRIORITY[state.priority].top === k;
+    const n = st.items.length;
+    return `
+      <div class="gcard ${top?'mc-top':''}">
+        <div class="store-h" data-action="toggle" data-store="${k}">
+          <div class="store-n"><i></i>${st.name}<span class="mc-eta">${st.eta}</span></div>
+          <div class="mc-store-r"><span class="li-p">$${fmtCOP(subtotal(k))}</span><span class="mc-chev">${exp?'−':'+'}</span></div>
+        </div>
+        <div class="mini">${badgeFor(k)} · ${n} producto${n===1?'':'s'}${top?' · <span class="mc-top-tag">Top pick</span>':''}</div>
+        ${exp ? (n ? `<div class="mc-items">${st.items.map((it,i)=>itemRow(k,it,i)).join('')}</div>` : `<div class="mc-empty">Canasta vacía · cámbiala por otro producto</div>`) : ''}
+      </div>`;
+  }
+
+  function render(){
+    if(state.confirmed) return renderConfirmed();
+    body.classList.remove('mc-center');
+    body.innerHTML = `
+      <div class="mc-req">“Quiero hacer esta lista de mercado. Encuentra los mejores precios entre diferentes tiendas, pero balanceando calidad, y que todo llegue hoy.”</div>
+      <div class="mc-groceries">${GROCERIES.map(g=>`<span class="chip">${g}</span>`).join('')}</div>
+      <div class="mc-status">Estoy comparando precios, calidad y disponibilidad en tiendas cercanas…</div>
+      <div class="a-line"><b>Listo.</b> Armé <b>tu mercado</b> balanceando precio, calidad y entrega hoy.</div>
+      <div class="mc-sub">Encontré una mejor combinación dividiendo tu compra entre 4 tiendas.</div>
+      <div class="save">Ahorras <b>$38.400</b> vs. comprar todo en una sola tienda</div>
+      <div class="mc-moment">
+        <div class="mini">${ICON.spark} AI Assistant</div>
+        <div class="mc-moment-t">Tu mercado completo, al mejor precio entre diferentes tiendas.</div>
+        <div class="mc-moment-s">AI Assistant compara, elige y arma las canastas por ti.</div>
+      </div>
+      ${Object.keys(state.stores).map(storeCard).join('')}
+      <div class="a-line">Elegí <b>Turbo</b> para lo que necesitas rápido, <b>Makro</b> para ahorrar en volumen y la <b>pescadería local</b> para priorizar frescura.</div>
+      <div class="a-line">Puedes cambiar cualquier producto o pedirme que priorice precio, calidad o velocidad.</div>
+      <div class="chipset">
+        <div class="chip ${state.priority==='precio'?'on':''}" style="cursor:pointer" data-action="priority" data-key="precio">Priorizar precio</div>
+        <div class="chip ${state.priority==='calidad'?'on':''}" style="cursor:pointer" data-action="priority" data-key="calidad">Priorizar calidad</div>
+        <div class="chip ${state.priority==='rapido'?'on':''}" style="cursor:pointer" data-action="priority" data-key="rapido">Que llegue más rápido</div>
+      </div>`;
+    foot.innerHTML = `
+      <div class="mc-foot-h">
+        <span>${canastas()} canastas · ${totalItems()} productos</span>
+        <button class="mc-tbtn" data-action="toggle-fold">${state.foldOpen?'Ocultar':'Ver detalle'}</button>
+      </div>
+      ${state.foldOpen ? `<div class="mc-breakdown">${Object.keys(state.stores).map(k=>`<div class="li"><div class="li-n">${state.stores[k].name}</div><div class="li-p">$${fmtCOP(subtotal(k))}</div></div>`).join('')}</div>` : ''}
+      <div class="cta two" data-action="checkout"><span>Pagar las 4 canastas</span><span>$${fmtCOP(total())}</span></div>
+      <div class="cta-alt">Un solo pago. Nosotros coordinamos las 4 órdenes.</div>`;
+  }
+
+  function renderConfirmed(){
+    body.classList.add('mc-center');
+    body.innerHTML = `
+      <div class="mc-conf">
+        <div class="mc-conf-badge">${ICON.spark}</div>
+        <div class="mc-conf-t">¡Listo! Tus 4 órdenes fueron creadas.</div>
+        <div class="mc-conf-s">Te avisamos cuando cada canasta esté en camino.</div>
+      </div>
+      <div class="mini" style="margin-top:20px">Total pagado</div>
+      <div class="li"><div class="li-n">${canastas()} canastas · ${totalItems()} productos</div><div class="li-p">$${fmtCOP(total())}</div></div>
+      <div class="mini" style="margin-top:18px">Tu mercado</div>
+      <div class="li"><div class="li-n">Turbo</div><div class="li-p">llega 2:10 PM</div></div>
+      <div class="li"><div class="li-n">Pescadería del Barrio</div><div class="li-p">llega 2:35 PM</div></div>
+      <div class="li"><div class="li-n">Éxito</div><div class="li-p">llega 2:50 PM</div></div>
+      <div class="li"><div class="li-n">Makro</div><div class="li-p">llega 3:15 PM</div></div>
+      <div class="mc-conf-s" style="margin-top:16px">Puedes seguir el estado de cada canasta desde tus pedidos.</div>`;
+    foot.innerHTML = `<button class="mc-tbtn" style="display:block;margin:0 auto" data-action="reset">Ver de nuevo</button>`;
+  }
+
+  function handleClick(e){
+    const btn = e.target.closest('[data-action]');
+    if(!btn) return;
+    const action = btn.dataset.action;
+    const k = btn.dataset.store;
+    const idx = btn.dataset.idx !== undefined ? +btn.dataset.idx : null;
+
+    if(action==='toggle'){
+      state.expanded[k] = !state.expanded[k];
+    } else if(action==='inc'){
+      state.stores[k].items[idx].qty++;
+    } else if(action==='dec'){
+      const it = state.stores[k].items[idx];
+      if(it.qty > 1) it.qty--;
+    } else if(action==='remove'){
+      state.stores[k].items.splice(idx,1);
+      state.swap = null;
+    } else if(action==='swap'){
+      state.swap = (state.swap && state.swap.store===k && state.swap.idx===idx) ? null : {store:k, idx};
+    } else if(action==='pick-alt'){
+      const ai = +btn.dataset.alt;
+      const it = state.stores[k].items[idx];
+      const chosen = it.alt[ai];
+      const previous = {name:it.name, price:it.base, from:state.stores[k].name};
+      it.name = chosen.name; it.price = chosen.price; it.base = chosen.price; it.qty = 1;
+      it.alt = it.alt.filter((_,a)=>a!==ai);
+      it.alt.push(previous);
+      state.swap = null;
+    } else if(action==='priority'){
+      const key = btn.dataset.key;
+      state.priority = state.priority === key ? null : key;
+      Object.values(state.stores).forEach(st=>st.items.forEach(it=>it.price=it.base));
+      if(state.priority){
+        const cfg = PRIORITY[state.priority];
+        Object.entries(cfg.adjust).forEach(([sk,delta])=>{
+          const items = state.stores[sk].items;
+          if(items.length) items[0].price = Math.max(1000, items[0].base + delta);
+        });
+      }
+    } else if(action==='toggle-fold'){
+      state.foldOpen = !state.foldOpen;
+    } else if(action==='checkout'){
+      state.confirmed = true;
+    } else if(action==='reset'){
+      state = freshState();
+    }
+    render();
+  }
+
+  function init(){
+    state = freshState();
+    root = document.getElementById('mc-root');
+    body = document.getElementById('mc-body');
+    foot = document.getElementById('mc-foot');
+    root.onclick = handleClick;
+    render();
+  }
+
+  return { init };
+})();
+
+function initMultiCart(){ MultiCart.init(); }
+
+/* Generic real-flow carousel — powers Stage 02's 6-image recommendation flow,
+   Stage 03's two Retail Assistant flows (2-image + 3-image), and Stage 05's
+   Search (2-image) and Magic Box (image + custom HTML) flows. Each carousel
+   instance is keyed by a `data-flow` id on its `.rf-screen` root, so several
+   can coexist on screen simultaneously (Stage 03 stacks two) and each is
+   re-initialized independently every time select(n) rebuilds #mock.
+   `init(flowId, steps)` accepts either plain image-path strings (legacy
+   image-only usage) or `{img:...}` / `{html:...}` step objects, so a single
+   flow can mix real screenshots with a custom-built HTML screen (used by
+   Stage 05's Magic Box "then it suggests AI Assistant" concept step). */
+const Carousels = (() => {
+  const registry = {};
+
+  const normalizeStep = s => (typeof s === 'string') ? { img: s } : s;
+
+  function render(flow){
+    const { steps, idx, els } = flow;
+    const step = steps[idx];
+    if(step.html !== undefined){
+      if(els.img) els.img.style.display = 'none';
+      if(els.htmlStep){ els.htmlStep.style.display = 'flex'; els.htmlStep.innerHTML = step.html; }
+    } else {
+      if(els.img){ els.img.style.display = ''; els.img.src = step.img; }
+      if(els.htmlStep){ els.htmlStep.style.display = 'none'; els.htmlStep.innerHTML = ''; }
+    }
+    els.count.textContent = `${idx + 1} / ${steps.length}`;
+    els.dots.innerHTML = steps.map((_, i) => `<span class="rf-dot ${i===idx?'on':''}"></span>`).join('');
+    els.prev.disabled = idx === 0;
+    els.next.disabled = idx === steps.length - 1;
+  }
+
+  function goTo(flow, i){
+    flow.idx = Math.max(0, Math.min(flow.steps.length - 1, i));
+    render(flow);
+  }
+
+  function handleClick(e){
+    const btn = e.target.closest('[data-rf]');
+    if(!btn) return;
+    const screenEl = btn.closest('.rf-screen');
+    const flow = screenEl && registry[screenEl.dataset.flow];
+    if(!flow) return;
+    if(btn.dataset.rf === 'next') goTo(flow, flow.idx + 1);
+    else if(btn.dataset.rf === 'prev') goTo(flow, flow.idx - 1);
+  }
+
+  function init(flowId, steps){
+    const screenEl = document.querySelector(`.rf-screen[data-flow="${flowId}"]`);
+    if(!screenEl) return;
+    const flow = {
+      steps: steps.map(normalizeStep), idx: 0,
+      els: {
+        img: screenEl.querySelector('.rf-img'),
+        htmlStep: screenEl.querySelector('.rf-html-step'),
+        dots: screenEl.querySelector('.rf-dots'),
+        count: screenEl.querySelector('.rf-count'),
+        prev: screenEl.querySelector('[data-rf="prev"]'),
+        next: screenEl.querySelector('[data-rf="next"]')
+      }
+    };
+    registry[flowId] = flow;
+    screenEl.onclick = handleClick;
+    render(flow);
+  }
+
+  return { init };
+})();
+
+function initRecFlow(){
+  Carousels.init('rec', Array.from({length:6}, (_,i) => `assets/rec-flow-${i+1}.png`));
+}
+
+function initRetailFlows(){
+  Carousels.init('retail1', ['assets/retail-mock1-1.png', 'assets/retail-mock1-2.png']);
+  Carousels.init('retail2', ['assets/retail-mock2-1.png', 'assets/retail-mock2-2.png', 'assets/retail-mock2-3.png']);
+}
+
+/* Magic Box carousel step 2 — a custom (non-Figma) concept screen, since we
+   only have one real screenshot of the card and must not fabricate fake
+   product screenshots to simulate its refresh cycle. Built from the same
+   dark conversational-AI classes used elsewhere (topBar/.utter/.a-line/
+   .chip/.gcard) and clearly marked as illustrative via a corner "Concept"
+   chip plus the existing .wow-disclaimer treatment from Stage 02. */
+const magicboxConceptStep = () => `
+  <div class="sc" style="height:100%;padding-bottom:46px">
+    ${topBar()}
+    <div style="display:flex;justify-content:flex-end;margin-top:4px">
+      <span class="chip" style="text-transform:uppercase;letter-spacing:.08em;font-size:9px">Concept</span>
+    </div>
+    <div class="a-body" style="margin-top:8px;flex:1">
+      <div class="gcard" style="opacity:.5;padding:10px">
+        <div class="row">
+          <div class="thumb sq"></div>
+          <div style="flex:1">
+            <div class="t1">Combo Shampoo Chedraui</div>
+            <div class="t2">Super Tienda Turbo · 11 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="utter" style="text-align:left;margin-top:14px;font-size:17px">¿No encontraste lo que buscabas?</div>
+      <div class="a-line" style="margin-top:6px">Hablá con tu <b>AI Assistant</b> para más recomendaciones, hechas a tu medida.</div>
+      <div class="chipset" style="margin-top:10px"><div class="chip on">✨ Hablar con AI Assistant</div></div>
+    </div>
+    <div class="wow-disclaimer">Innovación está trabajando en esto — pantalla conceptual, no capturada de producto.</div>
+  </div>`;
+
+function initAIEverywhereFlows(){
+  Carousels.init('search', ['assets/ai-everywhere-search-1.png', 'assets/ai-everywhere-search-2.png']);
+  Carousels.init('magicbox', [
+    { img: 'assets/ai-everywhere-magicbox-1.png' },
+    { html: magicboxConceptStep() }
+  ]);
+}
+
+const STAGES = [
+  {
+    n:1, name:'Reorder Restaurants', date:'Aug 17', dateNote:'2026', verb:'Remembers', status:'closing',
+    capability:'AI Assistant recognizes a previous restaurant order and rebuilds it — restaurant, items and quantities — ready to confirm in a single tap.',
+    value:'The most repeated behaviour in the app stops being a manual journey. No re-navigating the store, the menu or the modifiers: ordering again becomes one decision instead of eight taps.',
+    moment:'Reorder one shot.',
+    note:'',
+    gtm:{
+      rollout:[
+        {k:'Now', v:'Internal testing'},
+        {k:'On ship', v:'Product team testing'},
+        {k:'Aug 17', v:'Beta — internal users + Simón (CEO)'},
+        {k:'Sep 1', v:'Beta testing — power users with at least 2 purchases of the same product in the last 30 days'}
+      ],
+      country:'MX',
+      who:'Power users with at least 2 purchases of the same product in the last 30 days',
+      marketSize:'Of total active users in Restaurants, 31.37% repeated at least one same product — equivalent to 584,383 users.',
+      ideas:[
+        {text:'Give away the first order — 100% covered by us — so users try the experience and give us feedback.'},
+        {text:'For the onboarding video, use Simón (CEO) instead of an external influencer — a short personal welcome/thank-you message, to make it feel more authentic.',
+         image:'assets/ref-ceo-video.png', caption:'Reference — Airbnb, “Congratulations, Sam!” (Brian Chesky, CEO)'}
+      ],
+      channels:[
+        {k:'Native video In-App', v:'Organic/influencer onboarding video on Home, teaching the voice shortcut'},
+        {k:'WhatsApp', v:'Influencer content and reminder nudges'},
+        {k:'Mail', v:'“Welcome to trial” email nudging first use'}
+      ],
+      example:{
+        src:'assets/onboarding-example.mp4',
+        address:'Casa de Mamá · Calle 92 # 11-72',
+        figma:'https://www.figma.com/design/UHEUZq0ybE3H0LVsBKEgb5/Adri-in-Rappi?node-id=4744-100126&m=dev'
+      }
+    }
+  },
+  {
+    n:2, name:'Restaurant Recommendations', date:'Sep 14', dateNote:'2026', verb:'Recommends', status:'next',
+    capability:'AI Assistant interprets an open, unstructured craving and returns a short, personalized set of restaurants instead of a catalogue.',
+    value:'The blank-page problem disappears. The user no longer has to browse, filter and compare — they express what they feel like and get a curated shortlist that already knows their taste.',
+    moment:'Rappi picks for you.',
+    note:'<b>Stage 02 mock</b> — Conversational recommendations built from intent plus the user’s order history.',
+    signal:'Ranking leans heavily on social proof — ratings, review sentiment and what similar users are ordering — not on personalization alone.',
+    gtm:{
+      country:'All of Mexico',
+      who:'Progressive rollout via Wayfinder — launching Sept 20',
+      channels:[
+        {k:'PR', v:'LinkedIn post announcing the launch'},
+        {k:'Tooltip', v:'In-app tooltip announcing the new feature is available — no campaign needed'},
+        {k:'Influencers', v:'Influencer content'}
+      ]
+    }
+  },
+  {
+    n:3, name:'Retail Assistant', date:'Sep 28', dateNote:'2026', verb:'Builds', status:'coming',
+    capability:'AI Assistant translates a real-life job — a meal, an occasion, a plan — into a complete, correctly-sized grocery basket.',
+    value:'The user stops shopping item by item. They describe the outcome they want and skip list-making, searching and quantity math entirely.',
+    moment:'Tell Rappi what you need. We build the cart for you.',
+    note:'<b>Stage 03 mock</b> — A jobs-to-be-done request converted into a full basket, sized for the number of people.',
+    strategy:[
+      {t:'Photo-to-order', d:'Turn a photo of a handwritten or shopping list into a ready-to-review basket.'},
+      {t:'Price comparison', d:'Compare prices across products and stores to build the most cost-effective basket.'},
+      {t:'Best-match recommendation', d:'Find and suggest the right product when the request is broad or generic.'},
+      {t:'Natural language to basket', d:'Turn a spoken or typed need directly into a shopping list — no photo required.'},
+      {t:'Occasion-based baskets', d:'“Tacos for 6 people” becomes a complete, correctly-sized ingredient list.'},
+      {t:'Smart substitutions', d:'Suggest the best alternative the moment an item is low-stock or unavailable.'}
+    ],
+    scope:{
+      note:'Handshake closed with business and AI Assistant team, Jul 21–22',
+      items:[
+        'Adri builds the basket from a text, voice or photo list, then selects the store based on completeness, price and ETA — same logic as Shopping List: build the comparable basket first, pick the store after. The store is never asked upfront.',
+        'A “Go to store” button at the checkout/confirmation step (not a generic CTA) — lets the user keep shopping manually in that store after using Adri.',
+        'Stockout handling with substitutes: unavailable products show as disabled, with a “best match” option to view alternatives — reusing the existing substitution flow, no new one gets built.',
+        'Result rating: thumbs up/down on every basket built. On thumbs down, we’re exploring a disclaimer/modal that asks what specifically went wrong, inspired by the GPT feedback-modal pattern.',
+        'Delivery slots visible during the basket-building flow, with day iconography — exact treatment still pending definition with design.',
+        'Minimum order value (MOV) shown on the store card when comparing options.',
+        'Default quantities: when the user has no explicit preference — e.g. a list built from a photo — assume 1 unit per product.'
+      ]
+    },
+    gtm:{
+      channels:[
+        {k:'Tooltip', v:'In-app tooltip per feature, announcing each new capability as it ships'},
+        {k:'New entry points', v:'New entry points added directly in the App surfacing the capability'}
+      ]
+    }
+  },
+  {
+    n:4, name:'Proactive AI', date:'Sep 21', dateNote:'2026', verb:'Anticipates', status:'coming',
+    capability:'AI Assistant predicts what the user could want or need — from time, habits and context — and surfaces it before being asked.',
+    value:'The user no longer has to start the interaction. Recurring needs are handled before they become a task, and the decision arrives already made.',
+    moment:'Your AI Assistant is one step ahead.',
+    note:'<b>Stage 04 mock</b> — A proactive suggestion triggered by time and habit, not by a user query.',
+    gtm:{
+      channels:[
+        {k:'Tooltip', v:'In-app tooltip per feature, announcing each new capability as it ships'},
+        {k:'New entry points', v:'New entry points added directly in the App surfacing the capability'}
+      ]
+    }
+  },
+  {
+    n:5, name:'AI Everywhere', date:'Sep 28', dateNote:'2026', verb:'Appears', status:'coming',
+    capability:'AI Assistant expands into Restaurant Home and Home through Magic Box and additional contextual entry points across the app.',
+    value:'The Assistant stops being a destination the user has to remember to open. It is available at the exact moment of intent, inside the surfaces where people already are.',
+    moment:'Your Assistant, wherever you need it.',
+    note:'<b>Stage 05 mock</b> — Two real entry points: conversational Search, and a Magic Box card on Home that, after a few refreshes, invites the user into AI Assistant.',
+    gtm:{
+      channels:[
+        {k:'Tooltip', v:'In-app tooltip per feature, announcing each new capability as it ships'},
+        {k:'New entry points', v:'New entry points added directly in the App surfacing the capability'}
+      ]
+    }
+  },
+  {
+    n:6, name:'Retail Multicart', date:'Dec 7', dateNote:'2026', verb:'Optimizes', status:'coming',
+    capability:'AI Assistant finds products and prices across different stores and assembles one multi-store basket with a single checkout.',
+    value:'The user gets the best available basket without shopping in several stores or comparing prices themselves — savings without extra effort, one payment, one delivery.',
+    moment:'The best basket, across stores, in one checkout.',
+    note:'<b>Stage 06 mock</b> — One basket assembled from four stores, optimized on price, quality and same-day delivery, with a single checkout.',
+    gtm:{
+      channels:[
+        {k:'Tooltip', v:'In-app tooltip per feature, announcing each new capability as it ships'},
+        {k:'New entry points', v:'New entry points added directly in the App surfacing the capability'}
+      ]
+    }
+  },
+  {
+    n:7, name:'Conversational Search', date:'TBD', dateNote:'', verb:'Converses', status:'coming',
+    capability:'Search becomes native AI: it understands intent, constraints and context expressed in natural language and generates the results.',
+    value:'No keyword guessing and no stacking filters. The user asks the way they would ask a person, and discovery adapts to the answer.',
+    moment:'Search is now conversational.',
+    note:'<b>Stage 07 mock</b> — Natural-language query decomposed into explicit constraints, then resolved across verticals.',
+    gtm:{
+      channels:[
+        {k:'Tooltip', v:'In-app tooltip per feature, announcing each new capability as it ships'},
+        {k:'New entry points', v:'New entry points added directly in the App surfacing the capability'}
+      ]
+    }
+  }
+];
+
+const LABEL = {live:'LIVE', closing:'TESTING', next:'NEXT', coming:'COMING'};
+let active = 1;
+
+/* ---- timeline ---- */
+const track = document.getElementById('track');
+STAGES.forEach(s=>{
+  const b = document.createElement('button');
+  b.className = 'tl-item';
+  b.dataset.status = s.status;
+  b.dataset.n = s.n;
+  b.setAttribute('aria-label', `Stage ${s.n}: ${s.name}`);
+  b.innerHTML = `
+    <span class="tl-date-top">${s.date}</span>
+    <span class="tl-dot"></span>
+    <span class="tl-card">
+      <span class="tl-head">
+        <span class="tl-num">STAGE 0${s.n}</span>
+        <span class="badge ${s.status}"><i></i>${LABEL[s.status]}</span>
+      </span>
+      <span class="tl-name">${s.name}</span>
+    </span>`;
+  b.addEventListener('click',()=>select(s.n));
+  track.appendChild(b);
+});
+
+/* ---- render ---- */
+const mockEl = document.getElementById('mock');
+const noteEl = document.getElementById('mockNote');
+const sideEl = document.getElementById('side');
+
+function select(n){
+  active = n;
+  const s = STAGES[n-1];
+
+  document.querySelectorAll('.tl-item').forEach(el=>
+    el.classList.toggle('is-active', +el.dataset.n === n));
+
+  mockEl.className = 'stage-anim';
+  mockEl.innerHTML = MOCKS[n]();
+  if(n===2) initRecFlow();
+  if(n===3) initRetailFlows();
+  if(n===5) initAIEverywhereFlows();
+  if(n===6) initMultiCart();
+  noteEl.className = s.note ? 'mock-note stage-anim' : 'mock-note stage-anim is-empty';
+  noteEl.innerHTML = s.note;
+
+  sideEl.className = 'side stage-anim';
+  sideEl.innerHTML = `
+    <div class="side-eyebrow">Stage 0${s.n}</div>
+    <h2>${s.name}</h2>
+    <div class="side-meta">
+      <span class="side-date">${s.date}${s.dateNote?' <span>'+s.dateNote+'</span>':''}</span>
+      <span class="badge ${s.status}"><i></i>${LABEL[s.status]}</span>
+    </div>
+    <div class="block">
+      <div class="block-l">New capability</div>
+      <p class="block-t">${s.capability}</p>
+    </div>
+    <div class="block">
+      <div class="block-l">User value</div>
+      <p class="block-t">${s.value}</p>
+    </div>
+    <div class="moment">
+      <div class="moment-l">${ICON.spark} Marketable moment</div>
+      <p class="moment-q">“${s.moment}”</p>
+    </div>
+    ${s.signal ? `<div class="stage-note-line">${s.signal}</div>` : ''}
+    ${s.strategy ? `
+    <div class="block">
+      <div class="block-l">High-level strategy</div>
+      <div class="strat-grid">
+        ${s.strategy.map(p => `
+        <div class="strat-item">
+          <div class="strat-t">${p.t}</div>
+          ${p.d ? `<div class="strat-d">${p.d}</div>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>` : ''}
+    ${s.scope ? `
+    <div class="block">
+      <div class="block-l">In scope (v1)</div>
+      <div class="scope-note">${s.scope.note}</div>
+      <ol class="scope-list">
+        ${s.scope.items.map((item,i) => `
+        <li class="scope-item">
+          <span class="scope-n">${i+1}</span>
+          <span class="scope-t">${item}</span>
+        </li>`).join('')}
+      </ol>
+    </div>` : ''}
+    ${s.gtm ? `
+    <div class="block">
+      <div class="block-l">GTM plan</div>
+      <table class="gtm-table">
+        ${s.gtm.rollout ? `
+        <tr class="gtm-sec"><td colspan="2">Rollout</td></tr>
+        ${s.gtm.rollout.map(r => `<tr><td class="gtm-k">${r.k}</td><td>${r.v}</td></tr>`).join('')}
+        ` : ''}
+        ${(s.gtm.country || s.gtm.who) ? `
+        <tr class="gtm-sec"><td colspan="2">Audience</td></tr>
+        ${s.gtm.country ? `<tr><td class="gtm-k">Country</td><td>${s.gtm.country}</td></tr>` : ''}
+        ${s.gtm.who ? `<tr><td class="gtm-k">User base</td><td>${s.gtm.who}</td></tr>` : ''}
+        ${s.gtm.marketSize ? `<tr><td class="gtm-k">Market size</td><td>${s.gtm.marketSize}</td></tr>` : ''}
+        ` : ''}
+        ${s.gtm.channels ? `
+        <tr class="gtm-sec"><td colspan="2">Channels</td></tr>
+        ${s.gtm.channels.map(c => `<tr><td class="gtm-k">${c.k}</td><td>${c.v}</td></tr>`).join('')}
+        ` : ''}
+      </table>
+      ${s.gtm.example ? `
+      <div class="gtm-example">
+        <div class="phone onboard">
+          <div class="screen video-screen">
+            <div class="vb-app"></div>
+            <div class="vb-addr"><span>${s.gtm.example.address}</span><i>⌄</i></div>
+            <div class="vb-scrim"></div>
+            <div class="vb-close">×</div>
+            <div class="vb-card">
+              <video class="vb-video" src="${s.gtm.example.src}" autoplay muted loop playsinline ontimeupdate="vbTick(this)" onloadedmetadata="vbTick(this)"></video>
+              <div class="vb-fade"></div>
+              <div class="vb-progress">
+                <div class="vb-track"><div class="vb-fill"></div></div>
+                <span class="vb-time">0:00</span>
+              </div>
+            </div>
+            <button class="vb-skip">Saltar video <span>›</span></button>
+            <div class="vb-mic">${ICON.mic}</div>
+          </div>
+        </div>
+        <div class="gtm-example-r">
+          <div class="gtm-example-eyebrow">Channel example</div>
+          <p class="gtm-example-t">Native video In-App onboarding — teaches the user the voice shortcut in a few seconds.</p>
+          <a class="vb-link" href="${s.gtm.example.figma}" target="_blank" rel="noopener">View complete flow <span>→</span></a>
+        </div>
+      </div>` : ''}
+      ${s.gtm.ideas ? `
+      <div class="gtm-idea">
+        <div class="gtm-idea-l">Ideas to discuss</div>
+        ${s.gtm.ideas.map(i => `
+        <div class="gtm-idea-item">
+          <p class="gtm-idea-t">${i.text}</p>
+          ${i.image ? `
+          <div class="gtm-idea-ref">
+            <img src="${i.image}" alt="${i.caption||''}">
+            <span>${i.caption||''}</span>
+          </div>` : ''}
+        </div>`).join('')}
+      </div>` : ''}
+    </div>` : ''}`;
+
+  void mockEl.offsetWidth;
+
+  const el = document.querySelector(`.tl-item[data-n="${n}"]`);
+  if(el) el.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'});
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight' && active < STAGES.length) select(active+1);
+  if(e.key==='ArrowLeft'  && active > 1) select(active-1);
+});
+
+select(1);
+</script>
+</body>
+</html>
