@@ -817,7 +817,7 @@ footer{padding:40px 0;margin-top:40px;border-top:1px solid var(--line);font-size
 <section class="sec" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-k"><i></i> What it can do</div>
-    <h2 class="sec-h">Six capabilities, one assistant.</h2>
+    <h2 class="sec-h">Seven capabilities, one assistant.</h2>
     <p class="sec-sub">Each capability maps to a scenario in the live demo above. Click one to play it.</p>
     <div class="caps" id="caps"></div>
   </div>
@@ -1177,7 +1177,8 @@ const CAP_META = {
   discovery:{ic:'✨',t:'Personalized Discovery',d:'A curated shortlist from intent + history.',ex:'“Healthy dinner.”'},
   multi:{ic:'🔀',t:'Multi-Vertical Commerce',d:'One request across restaurants, Turbo & pharmacy.',ex:'“I feel sick.”'},
   photo:{ic:'📷',t:'Multimodal Interaction',d:'Text, voice or a photo, all valid inputs.',ex:'“What do I need to cook this?”'},
-  agentic:{ic:'🤖',t:'Agentic Commerce',d:'A goal decomposed, prepared and brought to checkout.',ex:'“Plan a birthday.”'}
+  agentic:{ic:'🤖',t:'Agentic Commerce',d:'A goal decomposed, prepared and brought to checkout.',ex:'“Plan a birthday.”'},
+  search:{ic:'🔎',t:'Conversational Search',d:'Search reads intent: keywords stay in Search, conversations open the assistant.',ex:'“High-protein dinner under 500 kcal.”'}
 };
 SCENARIOS.forEach((s,i)=>{
   const b = document.createElement('button');
